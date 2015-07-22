@@ -61,7 +61,7 @@
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="../overview/">Overview</a>
+                            <a href="../introduction/">Introduction</a>
                         </li>
                     
                         <li >
@@ -78,6 +78,10 @@
                     
                         <li >
                             <a href="../definitions_references/">Definitions & References</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../generic_keywords/">Generic Keywords</a>
                         </li>
                     
                     </ul>
@@ -136,7 +140,13 @@
 </code></pre>
 
 <p>The next document doesn't validate against the schema:</p>
-<pre><code>{chilean, argentinean, this, is, not, an, array}
+<pre><code>{
+ &quot;nation1&quot;: &quot;chilean&quot;, 
+ &quot;nation2&quot;: &quot;argentinean&quot;,
+ &quot;this&quot;: &quot;is&quot;,
+ &quot;not&quot;: &quot;an&quot;,
+ &quot;keyword&quot;: &quot;array&quot;
+ }
 
 </code></pre>
 
@@ -285,8 +295,7 @@
 
 <p>Here <strong>arrRes</strong> is a restriction for the type array such that every <strong>arrRes</strong> must be different from each other and occurs no more than one time each. Each of these restrictions is defined as follows:</p>
 <pre>
- <b>arrRes</b> := <b>typeArr</b> | <b>items</b> | <b>additems</b> | <b>minitems</b> | <b>maxitems</b>
-  | <b>unique</b>
+ <b>arrRes</b> := <b>typeArr</b> | <b>items</b> | <b>additems</b> | <b>minitems</b> | <b>maxitems</b>  | <b>unique</b>
  <b>typeArr</b> := "type": "array"
  <b>items</b> := ( <b>sameitems</b> |  <b>varitems</b> )
  <b>sameitems</b> := "items": { <b>JSch</b> }
@@ -302,7 +311,7 @@
 <ul>
 <li><b>k</b> is <code>"type": "array"</code> and <b>J</b> is an array</li>
 <li><b>k</b> is <code>"items": s</code> and <b>J</b> is an array such that every element validates against s</li>
-<li><b>k</b> is <code>"items": [s<sub>1</sub> , ... , s<sub>n</sub>]</code> and <b>J</b> is an array such that every element a<sub>i</sub> validates against s<sub>i</sub> for some s<sub>i</sub> in [s<sub>1</sub> , ... , s<sub>n</sub>]</li>
+<li><b>k</b> is <code>"items": [s<sub>1</sub> , ... , s<sub>n</sub>]</code> and <b>J</b> is an array <code>[a<sub>1</sub> , ... , a<sub>m</sub>]</code> such that every element a<sub>i</sub> validates against s<sub>i</sub> with i ≤ Min(m,n).</li>
 <li><b>k</b> is <code>"minItems": n</code> and <b>J</b> is an array with at least n elements</li>
 <li><b>k</b> is <code>"maxItems": n</code> and <b>J</b> is an array with at most n elements</li>
 <li><b>k</b> is <code>"uniqueItems": true</code> and <b>J</b> is an array with all elements different from each other</li>
@@ -628,15 +637,16 @@ JSON schemas that specify objects are called <em>Object Schemas</em>. The docume
 
 <p>Here <strong>objRes</strong> is a restriction for objects such that every <strong>objRes</strong> must be different from each other in the schema and occurs no more than one time each. Each of these restrictions is defined as follows:</p>
 <pre>
- <b>arrRes</b> := <b>typeObj</b> | <b>prop</b> | <b>addprop</b> | <b>req</b> | <b>minprop</b> | <b>maxprop</b> 
- | <b>dep</b>| <b>pattprop</b>
+ <b>arrRes</b> := <b>typeObj</b> | <b>prop</b> | <b>addprop</b> | <b>req</b> | <b>minprop</b> | <b>maxprop</b> | <b>dep</b>| <b>pattprop</b>
  <b>typeObj</b> := "type": "object"
  <b>prop</b> := "properties: "{ <b>kSch</b> (, <b>kSch</b>)<sup>*</sup>}
  <b>addprop</b> := "additionalProperties": (true | false | { <b>JSch</b> })
  <b>req</b> := "required": [ <b>kword</b> (, <b>kword</b>)<sup>*</sup>]
  <b>minprop</b> := "minProperties: " n
  <b>maxprop</b> := "maxProperties: " n
- <b>dep</b> := "dependencies: "({ <b>kArr</b> (, <b>kArr</b>)<sup>*</sup>}|{ <b>kSch</b> (, <b>kSch</b>)<sup>*</sup>})
+ <b>dep</b> := "dependencies: "(<b>depArr</b> | <b>depSch</b>)
+ <b>depArr</b> := { <b>kArr</b> (, <b>kArr</b>)<sup>*</sup>}
+ <b>depSch</b> := { <b>kSch</b> (, <b>kSch</b>)<sup>*</sup>}
  <b>kArr</b> := <b>kword</b>: [ <b>kword</b> (, <b>kword</b>)<sup>*</sup>]
  <b>pattprop</b> := "patternProperties: "{ <b>patSch</b> (, <b>patSch</b>)<sup>*</sup>}
  <b>patSch</b> := regexp: { <b>JSch</b> } </pre>
@@ -646,15 +656,16 @@ JSON schemas that specify objects are called <em>Object Schemas</em>. The docume
 <p>Let <b>O</b> be an object Schema and <b>J</b> a JSON document. We say that <b>J</b> validates against <b>O</b> if for each name/value pair <b>k</b> in <b>O</b> one of the following holds:</p>
 <ul>
 <li><b>k</b> is <code>"type": "object"</code> and <b>J</b> is an object</li>
-<li><b>k</b> is <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k' = k<sub>i</sub></b> for some i in [1,..., n] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
-<li><b>k</b> is <code>"additionalProperties": false</code> and <b>J</b> is an object such that each keyword in <b>J</b> is mentioned in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code></li>
-<li><b>k</b> is <code>"additionalProperties": s</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b> such that <b>k'</b> is different from every <b>k<sub>i</sub></b></b> in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>k'</b> satisfies <b>s</b></li>
+<li><b>k</b> is <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k' = k<sub>i</sub></b> for some i in [1 , ... , n] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
+<li><b>k</b> is <code>"additionalProperties": false</code> and <b>J</b> is an object such that every keyword in <b>J</b> is mentioned in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code></li>
+<li><b>k</b> is <code>"additionalProperties": true</code> and <b>J</b> is an object</li>
+<li><b>k</b> is <code>"additionalProperties": s</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b> such that <b>k'</b> is different from every <b>k<sub>i</sub></b></b> in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>j'</b> satisfies <b>s</b></li>
 <li><b>k</b> is <code>"required": [k<sub>1</sub> , ... , k<sub>n</sub>]</code> and <b>J</b> is an object such that every keyword <b>k<sub>i</sub></b></b> appears on <b>J</b> properties</li>
 <li><b>k</b> is <code>"minProperties": n</code> and <b>J</b> is an object with at least n properties</li>
 <li><b>k</b> is <code>"maxProperties": n</code> and <b>J</b> is an object with at most n properties</li>
 <li><b>k</b> is <code>"dependencies": {k<sub>1</sub>: [k<sub>1</sub>], ... , k<sub>n</sub>: [k<sub>n</sub>]}</code> and <b>J</b> is an object such that if k<sub>i</sub> appears on <b>J</b> then every keyword in [k<sub>i</sub>] appears in <b>J</b></li>
 <li><b>k</b> is <code>"dependencies": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code>  and <b>J</b> is an object such that if k<sub>i</sub> appears on <b>J</b> then <b>J</b> must satisfy <b>O</b> and s<sub>i</sub></li>
-<li><b>k</b> is <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  k<sub>i</sub> for some i in [1,..., n] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
+<li><b>k</b> is <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  regexp<sub>i</sub> for some i in [1,..., n] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
 </ul></div>
         </div>
 
