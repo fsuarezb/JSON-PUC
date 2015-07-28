@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+	<title>JSON Schema</title>
+
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">JSON Schema</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li class="active">
+                    <a href=".">Home</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specification <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="spec/introduction/">Introduction</a>
+                        </li>
+                    
+                        <li >
+                            <a href="spec/basic_types/">Basic Types</a>
+                        </li>
+                    
+                        <li >
+                            <a href="spec/arrays_objects/">Arrays & Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="spec/combined_schemas/">Combined Schemas</a>
+                        </li>
+                    
+                        <li >
+                            <a href="spec/definitions_references/">Definitions & References</a>
+                        </li>
+                    
+                        <li >
+                            <a href="spec/generic_keywords/">Generic Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="spec/multiple_types/">Multiple Types</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="spec/introduction/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#about-this-site">About this site</a></li>
+        
+    
+        <li class="main "><a href="#what-is-json">What is JSON?</a></li>
+        
+    
+        <li class="main "><a href="#what-is-json-schema">What is JSON Schema?</a></li>
+        
+    
+        <li class="main "><a href="#why-to-use-json-schema">Why to use JSON Schema</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<p><CENTER><h1>HOME</h1></CENTER>
+<CENTER>Here you'll find some general information about this site JSON Schema</CENTER></p>
+<h2 id="about-this-site">About this site</h2>
+<p>This site is intended to be a complete and understandable guide to <a href="http://json-schema.org">JSON Schema</a>. You can find an exhaustive specification with intuitive examples. The people behind this project form part of the <a href="http://dcc.ing.puc.cl">Computer Science Department</a> of <a href="http://puc.cl">PUC Chile</a>, and belong to the <a href="http://ciws.cl">Center for Semantic Web Research</a>.</p>
+<hr />
+<h2 id="what-is-json">What is JSON?</h2>
+<p><a href="http://json.org">JSON</a> (JavaScript Object Notation) is a file format commonly used for sharing information over the Web. JSON files are lightweight and easy to read by both machines and developers. This has made JSON the most popular file format for client-server communication. The next example JSON file contains information about the famous Chilean football player Gary Medel.</p>
+<p><strong>gary_medel.json</strong></p>
+<pre><code>{
+    &quot;first_name&quot;: &quot;Gary&quot;,
+    &quot;last_name&quot;: &quot;Medel&quot;,
+    &quot;age&quot;: 27,
+    &quot;club&quot;: {
+        &quot;name&quot;: &quot;Inter Milan&quot;,
+        &quot;founded&quot;: 1908
+    } 
+}
+</code></pre>
+
+<hr />
+<h2 id="what-is-json-schema">What is JSON Schema?</h2>
+<p>A JSON Schema is a file that specifies the structure of the JSON files used for a certain application. For example, when sharing information about football players, one would like to ensure the JSON file corresponding to a player has a given structure. A JSON Schema is a JSON file in which some words (keywords) have a predefined meaning. The next example specifies documents like <strong>gary_mede.json</strong>.</p>
+<p><strong>player_schema.json</strong></p>
+<pre><code>{
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+        &quot;first_name&quot;: { &quot;type&quot;: &quot;string&quot; },
+        &quot;last_name&quot;: { &quot;type&quot;: &quot;string&quot; },
+        &quot;age&quot;: { &quot;type&quot;: &quot;integer&quot; },
+        &quot;club&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+                &quot;name&quot;: { &quot;type&quot;: &quot;string&quot; },
+                &quot;founded&quot;: { &quot;type&quot;: &quot;integer&quot; }
+            },
+            &quot;required&quot;: [&quot;name&quot;]
+        }
+    },
+    &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;, &quot;club&quot;]
+}
+</code></pre>
+
+<hr />
+<h2 id="why-to-use-json-schema">Why to use JSON Schema</h2>
+<p>There are several reasons to use a schema when storing data or sharing data over the Web. Some of the benefits:</p>
+<ul>
+<li>Filtering content: when storing files or receiving files over the web, one always want to make sure the data comes in the right format. JSON Schema allows for on-the-fly validation of JSON files.</li>
+<li>Compression: if a schema is known by both the source and the target when sharing information, the network load can be decreased by compressing the name of the properties.</li>
+<li>Standardization: Today many APIs receive JSON files as instructions. For example, you can send a JSON file to Twitter's API indicating you want the last five tweets of a user. To use one of these APIs, you need to read the documentation provided by the API developers. Sometimes this documentation is messy and hard to read. If APIs defined a JSON Schema for input files, one could easily understand the allowed JSON files. Moreover, this allows for creating automation tools. For example, given a JSON Schema one could automatically generate a set of example API calls.</li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+    </body>
+</html>
