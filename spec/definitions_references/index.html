@@ -81,11 +81,11 @@
                         </li>
                     
                         <li >
-                            <a href="../generic_keywords/">Generic Keywords</a>
+                            <a href="../multiple_types/">Multiple Types</a>
                         </li>
                     
                         <li >
-                            <a href="../multiple_types/">Multiple Types</a>
+                            <a href="../generic_keywords/">Generic Keywords</a>
                         </li>
                     
                     </ul>
@@ -102,7 +102,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../generic_keywords/">
+                    <a rel="prev" href="../multiple_types/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -140,58 +140,54 @@
 <p>To establish a difference between the main schema and the auxiliary definitions we adopt the convention that every JSON Schema document consists of two parts. A JSON Schema, and a set of definitions. </p>
 <p>For example, suppose we want to define a Schema for documents containing information about names and ages of people. Earlier in this guide we used this schema:</p>
 <pre><code>{
-    &quot;type&quot;: &quot;object&quot;,
-    &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-    &quot;properties&quot;: {
-        &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-        &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-        &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+    "type": "object",
+    "required": ["first_name", "last_name", "age"],
+    "properties": {
+        "first_name": {"type": "string"},
+        "last_name": {"type": "string"},
+        "age": {"type": "integer"}
     }
-}
-</code></pre>
+}</code></pre>
 
-<p>It specifies objects that must have a first_name, a last_name and an age. Now we want to create a definition, called <em>person</em>, that represents this schema. We do it as follows: </p>
-<pre><code>
-{
-    “definitions”: {
-        “person”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-            &quot;properties&quot;: {
-                &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+<p>It specifies objects that must have a <em>first_name</em>, a <em>last_name</em> and an <em>age</em>. Now we want to create a definition, called <em>person</em>, that represents this schema. We do it as follows: </p>
+<pre><code>{
+    "definitions": {
+        "person": {
+            "type": "object",
+            "required": ["first_name", "last_name", "age"],
+            "properties": {
+                "first_name": {"type": "string"},
+                "last_name": {"type": "string"},
+                "age": {"type": "integer"}
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 
-<p>We could also have several definitions in a document. Here we add <em>football_team</em> to <em>person</em>:</p>
+<p>We could also have several definitions in a document. Here we add <code>"football_team"</code> to <code>"person"</code>:</p>
 <pre><code>{
-    “definitions”: {
-        “person”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-            &quot;properties&quot;: {
-                &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+    "definitions": {
+        "person": {
+            "type": "object",
+            "required": ["first_name", "last_name", "age"],
+            "properties": {
+                "first_name": {"type": "string"},
+                "last_name": {"type": "string"},
+                "age": {"type": "integer"}
             }
         },
-        “football_team”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [“team”, “league”],
-            &quot;properties&quot;: {
-                “team”: {&quot;type&quot;: &quot;string&quot;},
-                &quot;league&quot;: {&quot;type&quot;: &quot;string&quot;},
-                “year_founded”: {&quot;type&quot;: &quot;integer&quot;}
+        "football_team": {
+            "type": "object",
+            "required": ["team", "league"],
+            "properties": {
+                "team": {"type": "string"},
+                "league": {"type": "string"},
+                "year_founded": {"type": "integer"}
             }
         }
 
     }
-}
-</code></pre>
+}</code></pre>
 
 <h3 id="formal-specification">Formal Specification</h3>
 <p>We can plug in these definitions at the top level of any JSON Schema. The resulting grammar looks as follows, where <strong>JSDoc</strong> is a JSON Document that contains a Schema, <strong>JSch</strong> is the primitive used early on in this guide, and <strong>JSON</strong> can be any JSON document. </p>
@@ -204,92 +200,88 @@
 <h2 id="references">References</h2>
 <p>Here is when everything wraps up. Do we need to specify football players? Easy. Just combine a person with a football team: </p>
 <pre><code>{
-    “definitions”: {
-        “person”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-            &quot;properties&quot;: {
-                &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+    "definition": {
+        "person": {
+            "type": "object",
+            "required": ["first_name", "last_name", "age"],
+            "properties": {
+                "first_name": {"type": "string"},
+                "last_name": {"type": "string"},
+                "age": {"type": "integer"}
             }
         },
-        “football_team”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [“team”, “league”],
-            &quot;properties&quot;: {
-                “name”: {&quot;type&quot;: &quot;string&quot;},
-                &quot;league&quot;: {&quot;type&quot;: &quot;string&quot;},
-                “year_founded”: {&quot;type&quot;: &quot;integer&quot;}
+        "football_team": {
+            "type": "object",
+            "required": ["team", "league"],
+            "properties": {
+                "name": {"type": "string"},
+                "league": {"type": "string"},
+                "year_founded": {"type": "integer"}
             }
         }
 
     }, 
-    “allof”: [
-        {$ref: “#/definitions/person&quot;},
-        {$ref: “#/definitions/football_team”} 
+    "allOf": [
+        {"$ref": "#/definitions/person"},
+        {"$ref": "#/definitions/football_team"} 
     ]
-}
-</code></pre>
+}</code></pre>
 
-<p>Note how this document has two parts. The first part is under the <code>definitions</code> keyword, and it simply defines <em>person</em> and <em>football_team</em>. The second part is the actual schema. It specifies documents that satisfy both the 
+<p>Note how this document has two parts. The first part is under the <code>"definitions"</code> keyword, and it simply defines <em>person</em> and <em>football_team</em>. The second part is the actual schema. It specifies documents that satisfy both the 
 schema under <em>person</em> and the schema under <em>football_team</em>. For example, the following object validates against this schema: </p>
 <pre><code>{
-    &quot;first_name&quot;: &quot;Gary&quot;,
-    &quot;last_name&quot;: &quot;Medel&quot;,
-    &quot;age&quot;: 27, 
-    “name”: &quot;Inter de Milan”, 
-    “league”: &quot;Serie A&quot;
-}
-</code></pre>
+    "first_name": "Gary",
+    "last_name": "Medel",
+    "age": 27, 
+    "name": "Inter de Milan", 
+    "league": "Serie A"
+}</code></pre>
 
-<p>Of course, the reuse of <code>name</code> here is a bit confusing. We better place the information about the team as a separate object: </p>
+<p>Of course, the reuse of <code>"name"</code> here is a bit confusing. We better place the information about the team as a separate object: </p>
 <pre><code>{
-    “definitions”: {
-        “person”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-            &quot;properties&quot;: {
-                &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+    "definitions": {
+        "person": {
+            "type": "object",
+            "required": ["first_name", "last_name", "age"],
+            "properties": {
+                "first_name": {"type": "string"},
+                "last_name": {"type": "string"},
+                "age": {"type": "integer"}
             }
         },
-        “football_team”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [“team”, “league”],
-            &quot;properties&quot;: {
-                “name”: {&quot;type&quot;: &quot;string&quot;},
-                &quot;league&quot;: {&quot;type&quot;: &quot;string&quot;},
-                “year_founded”: {&quot;type&quot;: &quot;integer&quot;}
+        "football_team": {
+            "type": "object",
+            "required": ["team", "league"],
+            "properties": {
+                "name": {"type": "string"},
+                "league": {"type": "string"},
+                "year_founded": {"type": "integer"}
             }
         }
 
     }, 
-    “allof”: [
-        {$ref: “#/definitions/person&quot;},
+    "allOf": [
+        {"$ref": "#/definitions/person"},
         {
-            “type”: “object”,
-            “required”: [“current_club”] 
-            “properties”: {
-                “current_club”: {$ref: “#/definitions/football_team&quot;}
+            "type": "object",
+            "required": ["current_club"], 
+            "properties": {
+                "current_club": {"$ref": "#/definitions/football_team"}
             }
-        { 
+        } 
     ]
-}
-</code></pre>
+}</code></pre>
 
 <p>Now this specifies documents such as the following one:</p>
 <pre><code>{
-    &quot;first_name&quot;: &quot;Gary&quot;,
-    &quot;last_name&quot;: &quot;Medel&quot;,
-    &quot;age&quot;: 27, 
-    “current_club”: {
-        “name”: &quot;Inter de Milan”, 
-        “league”: &quot;Serie A&quot;
+    "first_name": "Gary",
+    "last_name": "Medel",
+    "age": 27, 
+    "current_club": {
+        "name": "Inter de Milan", 
+        "league": "Serie A"
     }
-}
-</code></pre>
+}</code></pre>
 
 <p>Much better!</p>
 <h2 id="json-pointers">JSON Pointers</h2>
@@ -324,57 +316,54 @@ a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
 </pre>
 
 <h2 id="reference-specification">Reference Specification</h2>
-<p>The idea of a reference such as <code>{$ref: “#/definitions/person"}</code> is to use the schema that is stored under the result of evaluating the pointer <code>/definitions/person</code> under the same document that is defining the JSON Schema. </p>
+<p>The idea of a reference such as <code>{"$ref": "#/definitions/person"}</code> is to use the schema that is stored under the result of evaluating the pointer <code>/definitions/person</code> under the same document that is defining the JSON Schema. </p>
 <p>We could also be looking elsewhere for references. In order to do this we need to add the <strong>address</strong> part of the URI in the reference keyword. </p>
 <p>For example, assume that the URI <code>http:db.ing.puc.cl/exampleschema</code> retrieves the following json document: </p>
 <pre><code>{
-    “definitions”: {
-        “person”: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-            &quot;properties&quot;: {
-                &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-                &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+    "definitions": {
+        "person": {
+            "type": "object",
+            "required": ["first_name", "last_name", "age"],
+            "properties": {
+                "first_name": {"type": "string"},
+                "last_name": {"type": "string"},
+                "age": {"type": "integer"}
             }
         }
-        &quot;type&quot;: &quot;object&quot;,
-        &quot;required&quot;: [“team”, “league”],
-        &quot;properties&quot;: {
-            “name”: {&quot;type&quot;: &quot;string&quot;},
-            &quot;league&quot;: {&quot;type&quot;: &quot;string&quot;},
-            “year_founded”: {&quot;type&quot;: &quot;integer&quot;}
+        "type": "object",
+        "required": ["team", "league"],
+        "properties": {
+            "name": {"type": "string"},
+            "league": {"type": "string"},
+            "year_founded": {"type": "integer"}
         }
     }
-}
-</code></pre>
+}</code></pre>
 
 <p>We can mix URIs and JSON Pointers: the reference <code>http:db.ing.puc.cl/exampleschema</code> retrieves this entire schema, but the reference <code>http:db.ing.puc.cl/exampleschema#/definitions/person</code> retrieves only </p>
 <pre><code>{
-    &quot;type&quot;: &quot;object&quot;,
-    &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;],
-    &quot;properties&quot;: {
-        &quot;first_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-        &quot;last_name&quot;: {&quot;type&quot;: &quot;string&quot;},
-        &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+    "type": "object",
+    "required": ["first_name", "last_name", "age"],
+    "properties": {
+        "first_name": {"type": "string"},
+        "last_name": {"type": "string"},
+        "age": {"type": "integer"}
     }
-}
-</code></pre>
+}</code></pre>
 
 <p>Now if we want to specify again the schema for football players, we can do it as follows: </p>
 <pre><code>{
-    “allof”: [
-        {$ref: “http:db.ing.puc.cl/exampleschema”},
+    "allOf": [
+        {"$ref": "http:db.ing.puc.cl/exampleschema"},
         {
-            “type”: “object”,
-            “required”: [“current_club”] 
-            “properties”: {
-                “current_club”: {“$ref”: “http:db.ing.puc.cl/exampleschema#/definitions/person”}
+            "type": "object",
+            "required": ["current_club"], 
+            "properties": {
+             "current_club": {"$ref": "http:db.ing.puc.cl/exampleschema#/definitions/person"}
             }
-        { 
+        } 
     ]
-}
-</code></pre>
+}</code></pre>
 
 <h3 id="formal-specification_2">Formal Specification</h3>
 <p>Note that <strong>uriRef</strong> below is the same grammar we defined earlier for URIs. 

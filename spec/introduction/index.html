@@ -81,11 +81,11 @@
                         </li>
                     
                         <li >
-                            <a href="../generic_keywords/">Generic Keywords</a>
+                            <a href="../multiple_types/">Multiple Types</a>
                         </li>
                     
                         <li >
-                            <a href="../multiple_types/">Multiple Types</a>
+                            <a href="../generic_keywords/">Generic Keywords</a>
                         </li>
                     
                     </ul>
@@ -161,35 +161,33 @@
 </ul>
 <p><strong>products.json</strong></p>
 <pre><code>[
-    {&quot;id&quot;: 1,
-     &quot;name&quot;: &quot;Milk&quot;,
-     &quot;stock&quot;: 25},
-    {&quot;id&quot;: 2,
-     &quot;name&quot;: &quot;Yougurt&quot;,
-     &quot;stock&quot;: 15,
-     &quot;link&quot;: &quot;http://delicious-yougurt.com&quot;}
-]
-</code></pre>
+    {"id": 1,
+     "name": "Milk",
+     "stock": 25},
+    {"id": 2,
+     "name": "Yougurt",
+     "stock": 15,
+     "link": "http://delicious-yougurt.com"}
+]</code></pre>
 
 <h2 id="json-schema">JSON Schema</h2>
 <p>A JSON Schema is a file that specifies the structure of the <a href="#json">JSON documents</a> that are used in a certain application. For example, owners of a store might want to share documents with the information of products. Here, a JSON Schema could specify that each of such documents is a list of products, and that each product contains an <em>id</em>, a <em>name</em>, a <em>stock</em> and optionally a <em>link</em> to the manufacturer's website. Since it is very simple to verify if a JSON document is <em>approved</em> by a schema,
 using a schema would be useful to ensure that all shared documents have this structure. The next JSON Schema specifies the structure defined above:</p>
 <p><strong>product_list_schema.json</strong></p>
 <pre><code>{  
-    &quot;type&quot;: &quot;array&quot;,
-    &quot;items&quot;: {
-        &quot;type&quot;: &quot;object&quot;,
-        &quot;properties&quot;: {
-            &quot;id&quot;: {&quot;type&quot;: &quot;integer&quot;},
-            &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
-            &quot;stock&quot;: {&quot;type&quot;: &quot;integer&quot;},
-            &quot;link&quot;: {&quot;type&quot;: &quot;string&quot;},
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "stock": {"type": "integer"},
+            "link": {"type": "string"},
         },
-        &quot;required&quot;: [&quot;id&quot;, &quot;name&quot;, &quot;stock&quot;],
-        &quot;additionalProperties&quot;: false
+        "required": ["id", "name", "stock"],
+        "additionalProperties": false
     }
-}
-</code></pre>
+}</code></pre>
 
 <p>First, <code>"type": "array"</code> indicates that the document must be an array. Then, <code>"items": {...}</code> tells us that each of the array's items must satisfy what's specified in the braces (which is also a schema). Hence, <code>"type": "object"</code> indicates that each item of the array must be an object, and <code>"properties": {...}</code> indicates what should be satisfied (also a schema) by the properties of each product. Finally, <code>"required": ["id", "name", "stock"]</code> specifies that each product must have an <em>id</em>, a <em>name</em> and a <em>stock</em>, and <code>"additionalProperties": false</code> says that a product cannot have properties that are not mentioned in <code>"properties": {...}</code> (and hence the only optional property is <em>link</em>).</p>
 <p>Note that the file <strong>products.json</strong> is <em>correct</em> according to what is specified in <strong>product_list_schema.json</strong>, and therefore it is a valid document for the application of sending product's information.</p>

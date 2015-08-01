@@ -80,12 +80,12 @@
                             <a href="../definitions_references/">Definitions & References</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Generic Keywords</a>
-                        </li>
-                    
                         <li >
                             <a href="../multiple_types/">Multiple Types</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Generic Keywords</a>
                         </li>
                     
                     </ul>
@@ -97,12 +97,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../definitions_references/">
+                    <a rel="next" href="../multiple_types/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
-                <li >
-                    <a rel="prev" href="../multiple_types/">
+                <li class="disabled">
+                    <a rel="prev" >
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -130,37 +130,31 @@
 <h1 id="generic-keywords"><CENTER>Generic Keywords</CENTER></h1>
 <p>JSON Schemas also support keywords that may apply to any JSON type. In this section we will provide the correct use and syntax of these keywords.</p>
 <h2 id="enumerated-values">Enumerated Values</h2>
-<p>The <code>enum</code> keyword restricts JSON instances to have certain values specified on the value of the operator. Let's take a look the following example:</p>
+<p>The <code>"enum"</code> keyword restricts JSON instances to have certain values specified on the value of the operator. Let's take a look the following example:</p>
 <pre><code>{
- &quot;type&quot;: &quot;string&quot;,
- &quot;enum&quot;: [&quot;Inter Milan&quot;, &quot;AC Milan&quot;, &quot;Juventus&quot;, &quot;Roma&quot;]
-}
-</code></pre>
+ "type": "string",
+ "enum": ["Inter Milan", "AC Milan", "Juventus", "Roma"]
+}</code></pre>
 
-<p>Here we are asking for exclusively JSON strings with the values "Inter Milan", "AC Milan", "Juventus" or "Roma". For example the next JSON instance validates against the schema</p>
-<pre><code>&quot;AC Milan&quot;
-</code></pre>
+<p>Here we are asking for exclusively JSON strings with the values <code>"Inter Milan"</code>, <code>"AC Milan"</code>, <code>"Juventus"</code> or <code>"Roma"</code>. For example the next JSON instance validates against the schema</p>
+<pre><code>"AC Milan"</code></pre>
 
 <p>But this one doesn't</p>
-<pre><code>&quot;Fiorentina&quot;
-</code></pre>
+<pre><code>"Fiorentina"</code></pre>
 
 <p>Furthermore, we may give different types values to the list</p>
 <pre><code>{
- &quot;enum&quot;: [&quot;Two&quot;, 2, true, null]
-}
-</code></pre>
+ "enum": ["Two", 2, true, null]
+}</code></pre>
 
 <p>The following JSON validates against the  schema</p>
-<pre><code>null
-</code></pre>
+<pre><code>null</code></pre>
 
 <p>But this one doesn't</p>
-<pre><code>16
-</code></pre>
+<pre><code>16</code></pre>
 
 <h3 id="formal-specification">Formal Specification</h3>
-<p>The <code>enum</code> restriction is formally specified using the following grammar.</p>
+<p>The <code>"enum"</code> restriction is formally specified using the following grammar.</p>
 <pre>
 <b>enum</b> := "enum": [<b>Jval</b> (, <b>Jval</b>)<sup>*</sup>]
 </pre>
@@ -169,35 +163,33 @@
 <h3 id="formal-validation">Formal Validation</h3>
 <p>Let <strong>S</strong> be Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>S</strong> if the following holds:</p>
 <ul>
-<li><strong>S</strong> has the restriction <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any val<sub>i</sub> for some i in [1 , ..., n].</li>
+<li><strong>S</strong> has the restriction <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
 </ul>
 <h2 id="metadata">Metadata</h2>
-<p>These keywords just represent metadata of the schema and don't have a very strong semantic. However,they are good practices both for programmers and users to provide. These keywords can be either <code>title</code>, <code>description</code>, <code>default</code> or <code>$schema</code>. Let's take a look to the following example</p>
+<p>These keywords just represent metadata of the schema and don't have a very strong semantic. However,they are good practices both for programmers and users to provide. These keywords can be either <code>"title"</code>, <code>"description"</code>, <code>"default"</code> or <code>"$schema"</code>. Let's take a look to the following example</p>
 <pre><code>{
-    &quot;$schema&quot;: &quot;http://json-schema.org/draft-04/schema#&quot;,
-    &quot;title&quot;: &quot;Player schema&quot;,
-    &quot;description&quot;: &quot;This schema accepts soccer players&quot;,
-    &quot;default&quot;: null,
-    &quot;type&quot;: &quot;object&quot;,
-    &quot;properties&quot;: {
-        &quot;first_name&quot;: { &quot;type&quot;: &quot;string&quot; },
-        &quot;last_name&quot;: { &quot;type&quot;: &quot;string&quot; },
-        &quot;age&quot;: { &quot;type&quot;: &quot;integer&quot; },
-        &quot;club&quot;: {
-            &quot;type&quot;: &quot;object&quot;,
-            &quot;properties&quot;: {
-                &quot;name&quot;: { &quot;type&quot;: &quot;string&quot; },
-                &quot;founded&quot;: { &quot;type&quot;: &quot;integer&quot; }
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Player schema",
+    "description": "This schema accepts soccer players",
+    "default": null,
+    "type": "object",
+    "properties": {
+        "first_name": { "type": "string" },
+        "last_name": { "type": "string" },
+        "age": { "type": "integer" },
+        "club": {
+            "type": "object",
+            "properties": {
+                "name": { "type": "string" },
+                "founded": { "type": "integer" }
             },
-            &quot;required&quot;: [&quot;name&quot;]
+            "required": ["name"]
         }
     },
-    &quot;required&quot;: [&quot;first_name&quot;, &quot;last_name&quot;, &quot;age&quot;, &quot;club&quot;]
-}
+    "required": ["first_name", "last_name", "age", "club"]
+}</code></pre>
 
-</code></pre>
-
-<p>First, the <code>$schema</code> keyword specifies that the current schema follows the specification of the version 3 of JSON Schema. We can provide different versions deppending of our requirements. The <code>title</code> keyword is useful to give a name to the schema. Similarly, the <code>description</code> keyword is useful to give a short description of what kind of documents the schema will accept. Finally the <code>default</code> keyword can be used to specify a default value for the document if an hipothetical validator reads a missing value as input.</p></div>
+<p>First, the <code>"$schema"</code> keyword specifies that the current schema follows the specification of the version 3 of JSON Schema. We can provide different versions deppending of our requirements. The <code>"title"</code> keyword is useful to give a name to the schema. Similarly, the <code>"description"</code> keyword is useful to give a short description of what kind of documents the schema will accept. Finally the <code>"default"</code> keyword can be used to specify a default value for the document if an hipothetical validator reads a missing value as input.</p></div>
         </div>
 
         <footer class="col-md-12">

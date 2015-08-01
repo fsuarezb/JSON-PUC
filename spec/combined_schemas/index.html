@@ -81,11 +81,11 @@
                         </li>
                     
                         <li >
-                            <a href="../generic_keywords/">Generic Keywords</a>
+                            <a href="../multiple_types/">Multiple Types</a>
                         </li>
                     
                         <li >
-                            <a href="../multiple_types/">Multiple Types</a>
+                            <a href="../generic_keywords/">Generic Keywords</a>
                         </li>
                     
                     </ul>
@@ -148,7 +148,7 @@
 </ul>
 <p>Below we describe each of the keywords in more detail.</p>
 <h2 id="anyof"><code>anyOf</code></h2>
-<p>The <code>anyOf</code> keyword is used to make  document validate against at least one of the listed schemas. For instance, if we were building an application that can accept either strings or integers we could use the following schema to check if the document is of the correct format.</p>
+<p>The <code>"anyOf"</code> keyword is used to make  document validate against at least one of the listed schemas. For instance, if we were building an application that can accept either strings or integers we could use the following schema to check if the document is of the correct format.</p>
 <pre><code>{
   "anyOf": [
     { "type": "string" }, 
@@ -159,7 +159,7 @@
 
 <p>In this case JSON document <code>"This is a string"</code> satisfies the above schema, as does the document <code>72</code>. On the other hand <code>7.42</code> will not satisfy the schema, nor will the document <code>{ "name": "Gary"}</code>.</p>
 <h2 id="allof"><code>allOf</code></h2>
-<p>In order to specify that our document has to conform to several different schemas we use the keyword <code>allOf</code>. For instance if we want to accept strings that are in the intersection of two regular expressions it is often simpler to validate against two different schemas than write a single regular expression denoting the intersection. The schema below validates against any string that is a gmail address and that contains a substring <code>joe</code>.</p>
+<p>In order to specify that our document has to conform to several different schemas we use the keyword <code>"allOf"</code>. For instance if we want to accept strings that are in the intersection of two regular expressions it is often simpler to validate against two different schemas than write a single regular expression denoting the intersection. The schema below validates against any string that is a gmail address and that contains a substring <code>"joe"</code>.</p>
 <pre><code>{
   "allOf": [
     { "type": "string", "pattern": "^.+@gmail.com$" }, 
@@ -168,8 +168,8 @@
 }
 </code></pre>
 
-<p>Although the example above looks somewhat superficial (and is indeed expressible without using the <code>allOf</code> keyword, as all basic examples of <code>allOf</code> are), the true usefulness of the <code>allOf</code> keyword becomes evident when combined with the <a href="../link"><code>definition</code></a> and <a href="../link"><code>$ref</code></a> keywords.</p>
-<p>Note that using <code>allOf</code> one can easily define schemas that do <em>not</em> validate against any document. For instance the schema below requires the document to be both a string and an integer, which is clearly not possible.</p>
+<p>Although the example above looks somewhat superficial (and is indeed expressible without using the <code>"allOf"</code> keyword, as all basic examples of <code>"allOf"</code> are), the true usefulness of the <code>"allOf"</code> keyword becomes evident when combined with the <a href="../link"><code>"definition"</code></a> and <a href="../link"><code>"$ref"</code></a> keywords.</p>
+<p>Note that using <code>"allOf"</code> one can easily define schemas that do <em>not</em> validate against any document. For instance the schema below requires the document to be both a string and an integer, which is clearly not possible.</p>
 <pre><code>{
   "allOf": [
     { "type": "string" }, 
@@ -179,7 +179,7 @@
 </code></pre>
 
 <h2 id="oneof"><code>oneOf</code></h2>
-<p>When we want to validate against precisely one schema from a predefined set of schemas we use the <code>oneOf</code> keyword. For instance if want to find numbers that are multiples of <code>2</code> or multiples of <code>5</code>, but not both at the same time we could use the following schema.</p>
+<p>When we want to validate against precisely one schema from a predefined set of schemas we use the <code>"oneOf"</code> keyword. For instance if want to find numbers that are multiples of <code>2</code> or multiples of <code>5</code>, but not both at the same time we could use the following schema.</p>
 <pre><code>{
   "oneOf": [
     { "type": "integer", "multipleOf": 2 }, 
@@ -190,7 +190,7 @@
 
 <p>This schema will validate against <code>4</code> and <code>15</code>, but it will not validate against <code>10</code>, as it satisfies both of the schemas. Equally, the schema will not validate against <code>3</code>, or any document that is not an integer.</p>
 <h2 id="not"><code>not</code></h2>
-<p>To say that a document does not validate against a certain schema we use the <code>not</code> keyword. For instance the schema below validates against any document that is not a string.</p>
+<p>To say that a document does not validate against a certain schema we use the <code>"not"</code> keyword. For instance the schema below validates against any document that is not a string.</p>
 <pre><code>{ "not": { "type": "string" } }  
 </code></pre>
 
@@ -209,10 +209,10 @@
 <h2 id="formal-validation">Formal Validation</h2>
 <p>Let <strong>C</strong> be a Combined Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>C</strong> if:</p>
 <ul>
-<li><strong>C</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>some</em> <code>Sch<sub>i</sub></code>, for i=1...n</li>
-<li><strong>C</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>all</em> of <code>Sch<sub>i</sub></code>, for i=1...n</li>
-<li><strong>C</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>exactly one</em> of <code>Sch<sub>i</sub></code>, for i=1...n</li>
-<li><strong>C</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <code>Sch</code>.</li>
+<li><strong>C</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>C</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>C</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>C</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong>.</li>
 </ul></div>
         </div>
 
