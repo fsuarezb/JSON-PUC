@@ -116,7 +116,7 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#combined-schemas">Combined Schemas</a></li>
+        <li class="main active"><a href="#combined-restrictions">Combined Restrictions</a></li>
         
             <li><a href="#anyof">anyOf</a></li>
         
@@ -135,7 +135,7 @@
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="combined-schemas"><CENTER>Combined Schemas</CENTER></h1>
+<h1 id="combined-restrictions"><CENTER>Combined Restrictions</CENTER></h1>
 <p>Sometimes we want to specify more complex constraints that require verifying if a document validates against multiple schemas. JSON Schema allows us to do so using the following keywords: </p>
 <ul>
 <li><a href="#anyof"><code>anyOf</code></a>, which forces the document to validate against <em>at least one</em> of the specified schemas</li>
@@ -196,9 +196,9 @@
 
 <p>It will accept the document <code>4</code> or <code>{ "name": "Gary" }</code>, but not <code>"name"</code>, or any other string.  </p>
 <h2 id="formal-specification">Formal Specification</h2>
-<p>Combined Schemas <strong>combSch</strong> are formally specified using the following grammar.</p>
+<p>Combined restrictions <strong>combRes</strong> are formally specified using the following grammar.</p>
 <pre>
-<b>combSch</b> := <b>allOf</b> | <b>anyOf</b>| <b>oneOf</b> | <b>not</b>
+<b>combRes</b> := <b>allOf</b> | <b>anyOf</b>| <b>oneOf</b> | <b>not</b>
 <b>anyOf</b> := "anyOf": [ { <b>JSch</b> } (, { <b>JSch</b> })* ]
 <b>allOf</b> := "allOf": [ { <b>JSch</b> } (, { <b>JSch</b> })* ]
 <b>oneOf</b> := "oneOf": [ { <b>JSch</b> } (, { <b>JSch</b> })* ]
@@ -207,7 +207,7 @@
 
 <p>where <strong>JSch</strong> denotes an arbitrary JSON Schema.</p>
 <h2 id="formal-validation">Formal Validation</h2>
-<p>Let <strong>C</strong> be a Combined Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>C</strong> if:</p>
+<p>Let <strong>C</strong> be a Combined Restriction and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>C</strong> if:</p>
 <ul>
 <li><strong>C</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
 <li><strong>C</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
