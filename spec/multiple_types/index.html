@@ -57,7 +57,7 @@
             
             
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specification <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Building Schemas <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
@@ -86,6 +86,23 @@
                     
                         <li >
                             <a href="../generic_keywords/">Generic Keywords</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Formal Specification <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../grammar/">Grammar</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../semantics/">Semantics</a>
                         </li>
                     
                     </ul>
@@ -266,9 +283,10 @@ We say that <strong>J</strong> validates against <strong>M</strong> if one of th
 <li>
 <p>for each name/value pair <strong>k</strong> in <strong>M</strong> such that <strong>Compatible(J,k) = true</strong>, <strong>J</strong> must validate against <strong>k</strong>. Here we must note that the semantics of <strong>k</strong> is mentioned in each type section</p>
 </li>
-<li>
-<p><strong>M</strong> has the name/value pair <code>"type: [t<sub>1</sub> ... t<sub>n</sub>]"</code> and for some <strong>t<sub>i</sub></strong> in <strong>[ t<sub>1</sub>  ...  t<sub>n</sub> ]</strong>, <strong>J</strong> validates against every each name/value pair <strong>k</strong> such that <strong>k</strong> is a compatible keyword with <strong>t<sub>i</sub></strong>. Here we also note that the semantics of <strong>k</strong> is mentioned in each type section</p>
-</li>
+</ul>
+<p>We may also have a multiple type restriction. In this case we say that <strong>J</strong> validates against <strong>M</strong> if the following holds:</p>
+<ul>
+<li><strong>M</strong> has the name/value pair <code>"type: [t<sub>1</sub> ... t<sub>n</sub>]"</code> and <strong>J</strong> type is <strong>t<sub>i</sub></strong> for some <strong>t<sub>i</sub></strong> in <strong>[ t<sub>1</sub>  ...  t<sub>n</sub> ]</strong>.</li>
 </ul>
 <h3 id="conclusions">Conclusions</h3>
 <p>Finally we must mention that the use of the <code>type</code> keyword is a highly recommended practice by the community. As we learnt on this section the multiple type instances can be easily simulated using boolean combinations of schemas and doesn't seem to expand the expressibility of JSON Schemas.</p></div>
