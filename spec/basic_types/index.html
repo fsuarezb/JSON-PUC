@@ -7,7 +7,8 @@
         
         
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <link rel="shortcut icon" href="../../favicon.ico">
+        
 
 	<title>Basic Types - JSON Schema</title>
 
@@ -22,6 +23,16 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-36723568-3', 'mkdocs.org');
+            ga('send', 'pageview');
+        </script>
         
     </head>
 
@@ -197,7 +208,7 @@
 <h3 id="formal-validation">Formal Validation</h3>
 <p>Let <strong>S</strong> be a String Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>S</strong> if for each key:value pair <strong>k</strong> in <strong>S</strong> one of the following holds:</p>
 <ul>
-<li><strong>k</strong> is <code>"type":"string"</code> and <strong>J</strong> is a string</li>
+<li><strong>k</strong> is <code>"type": "string"</code> and <strong>J</strong> is a string</li>
 <li><strong>k</strong> is of the form <code>"minLength" : n</code> and <strong>J</strong> is a string of length at least <strong>n</strong></li>
 <li><strong>k</strong> is of the form <code>"maxLength" : n</code> and <strong>J</strong> is a string of length at most <strong>n</strong></li>
 <li><strong>k</strong> is of the form <code>"pattern" : r</code> and <strong>J</strong> is a string that matches the regular expression <strong>r</strong></li>

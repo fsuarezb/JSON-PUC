@@ -7,7 +7,8 @@
         
         
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <link rel="shortcut icon" href="../../favicon.ico">
+        
 
 	<title>Arrays & Objects - JSON Schema</title>
 
@@ -22,6 +23,16 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-36723568-3', 'mkdocs.org');
+            ga('send', 'pageview');
+        </script>
         
     </head>
 
@@ -631,17 +642,17 @@ JSON schemas that specify objects are called <em>Object Schemas</em>. The docume
 <p>Let <b>O</b> be an object Schema and <b>J</b> a JSON document. We say that a keyword <strong>k</strong> appears in <strong>J</strong> is <strong>J</strong> contains a key:value pair of the form <strong>k: j'</strong>, for some document <strong>j'</strong>. </p>
 <p>We say that <b>J</b> validates against <b>O</b> if for each key:value pair <b>k</b> in <b>O</b> one of the following holds:</p>
 <ul>
-<li><b>k</b> is <code>"type": "object"</code> and <b>J</b> is an object</li>
-<li><b>k</b> is <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k' = k<sub>i</sub></b> for some <strong>i</strong> in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
-<li><b>k</b> is <code>"additionalProperties": false</code> and <b>J</b> is an object such that every keyword in <b>J</b> is mentioned in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code></li>
-<li><b>k</b> is <code>"additionalProperties": true</code> and <b>J</b> is an object</li>
-<li><b>k</b> is <code>"additionalProperties": s</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b> such that <b>k'</b> is different from every <b>k<sub>i</sub></b></b> in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> we have that <b>j'</b> satisfies <b>s</b></li>
-<li><b>k</b> is <code>"required": [k<sub>1</sub> , ... , k<sub>n</sub>]</code> and each <b>k<sub>i</sub></b></b> appears in <strong>J</strong>. </li>
-<li><b>k</b> is <code>"minProperties": n</code> and <b>J</b> is an object with at least <strong>n</strong> key:value pairs</li>
-<li><b>k</b> is <code>"maxProperties": n</code> and <b>J</b> is an object with at most <strong>n</strong> key:value pairs</li>
-<li><b>k</b> is <code>"dependencies": {k<sub>1</sub>: [k<sub>1</sub>], ... , k<sub>n</sub>: [k<sub>n</sub>]}</code> and <b>J</b> is an object such that if <strong>k<sub>i</sub></strong> appears on <b>J</b> then every keyword in <strong>[k<sub>i</sub>]</strong> appears in <b>J</b></li>
-<li><b>k</b> is <code>"dependencies": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code>  and <b>J</b> is an object such that if <b>k<sub>i</sub></b> appears on <b>J</b> then <b>J</b> must satisfy <b>s<sub>i</sub></b></li>
-<li><b>k</b> is <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object such that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  regexp<sub>i</sub> for some i in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
+<li><strong>k</strong> is of the form <code>"type": "object"</code> and <b>J</b> is an object</li>
+<li><strong>k</strong> is of the form <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k' = k<sub>i</sub></b> for some <strong>i</strong> in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
+<li><strong>k</strong> is of the form <code>"additionalProperties": false</code> and <b>J</b> is an object such that every keyword in <b>J</b> is mentioned in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code></li>
+<li><strong>k</strong> is of the form <code>"additionalProperties": true</code> and <b>J</b> is an object</li>
+<li><strong>k</strong> is of the form <code>"additionalProperties": s</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b> such that <b>k'</b> is different from every <b>k<sub>i</sub></b></b> in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> we have that <b>j'</b> satisfies <b>s</b></li>
+<li><strong>k</strong> is of the form <code>"required": [k<sub>1</sub> , ... , k<sub>n</sub>]</code> and each <b>k<sub>i</sub></b></b> appears in <strong>J</strong>. </li>
+<li><strong>k</strong> is of the form <code>"minProperties": n</code> and <b>J</b> is an object with at least <strong>n</strong> key:value pairs</li>
+<li><strong>k</strong> is of the form <code>"maxProperties": n</code> and <b>J</b> is an object with at most <strong>n</strong> key:value pairs</li>
+<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: [k<sub>1</sub>], ... , k<sub>n</sub>: [k<sub>n</sub>]}</code> and <b>J</b> is an object such that if <strong>k<sub>i</sub></strong> appears on <b>J</b> then every keyword in <strong>[k<sub>i</sub>]</strong> appears in <b>J</b></li>
+<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code>  and <b>J</b> is an object such that if <b>k<sub>i</sub></b> appears on <b>J</b> then <b>J</b> must satisfy <b>s<sub>i</sub></b></li>
+<li><strong>k</strong> is of the form <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object such that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  regexp<sub>i</sub> for some i in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
 </ul></div>
         </div>
 
