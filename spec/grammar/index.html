@@ -158,6 +158,10 @@
         
             <li><a href="#multiple-restrictions">Multiple Restrictions</a></li>
         
+            <li><a href="#refered-schemas">Refered Schemas</a></li>
+        
+            <li><a href="#notation">Notation</a></li>
+        
     
     </ul>
 </div></div>
@@ -170,14 +174,15 @@
 <h2 id="json-documents-and-schemas">JSON Documents and Schemas</h2>
 <p>Let <strong>JDOC</strong> be an arbitrary JSON Schema Document. We can define it's syntax using the following grammar:
  <pre>
-<b>JSDoc</b> := { ( <b>defs</b>, )? <b>JSch</b> }
+<b>JSDoc</b> := { ( <b>id</b>, )? ( <b>defs</b>, )? <b>JSch</b> }
+<b>id</b> := "id": "<b>uri</b>"
 <b>defs</b> := "definitions": { <b>kSch (, kSch)<sup>★</sup></b> } 
 <b>kSch</b> := <b>kword</b>: { <b>JSch</b> }
-<b>JSch</b> := <b>res</b> (, <b>res</b>)<sup>★</sup>
+<b>JSch</b> := <b> refSch </b>| ( <b>res</b> (, <b>res</b>)<sup>★</sup>)
 <b>res</b> := <b>type</b> | <b>strRes</b> | <b>numRes</b> | <b>arrRes</b> | <b>objRes</b> | <b>multRes</b>
 <b>type</b> := "type" : ([<b>typename</b> (, <b>typename</b>)<sup>★</sup>] | <b>typename</b>)
 <b>typename</b> := "string" | "integer" | "number" | "boolean" | "null" | "array" | "object"</pre> </p>
-<p>Here each <strong>res</strong> and <strong>typename</strong> must be different from each other(otherwise they would be superfluous). We must also note that each <strong>kword</strong> is representing a keyword that must be unique in the nest level that is occurs. Now we define the remaining restrictions which variables are <strong>strRes</strong>, <strong>numRes</strong>, <strong>arrRes</strong>, <strong>objRes</strong> and <strong>multRes</strong>.</p>
+<p>Here each <strong>res</strong> and <strong>typename</strong> must be different from each other(otherwise they would be superfluous). We must also note that each <strong>kword</strong> is representing a keyword that must be unique in the nest level that is occurs. Finally, a <strong>uri</strong> is any possible uri as defined in the <a href="https://tools.ietf.org/html/rfc3986#section-3.1">standard</a>. Next we specify the remaining restrictions: <strong>strRes</strong>, <strong>numRes</strong>, <strong>arrRes</strong>, <strong>objRes</strong> and <strong>multRes</strong>.</p>
 <h2 id="string-restrictions">String Restrictions</h2>
 <pre>
 <b>strRes</b> :=  <b>minLen</b> | <b>maxLen</b> | <b>pattern</b>
@@ -235,7 +240,50 @@
 <b>enum</b> := "enum": [<b>Jval</b> (, <b>Jval</b>)<sup>★</sup>]
 </pre>
 
-<p>Here <strong>Jval</strong> is either a <code>string</code>, <code>number</code>, <code>array</code>, <code>object</code>, <code>bool</code> or a <code>null</code>  value.</p></div>
+<p>Here <strong>Jval</strong> is either a <code>string</code>, <code>number</code>, <code>array</code>, <code>object</code>, <code>bool</code> or a <code>null</code>  value.</p>
+<h2 id="refered-schemas">Refered Schemas</h2>
+<p>Note that <strong>uriRef</strong> below is the same grammar we defined earlier for URIs. 
+<pre>
+<b>refSch</b> := "$ref": "<b>uriRef</b>" 
+<b>uriRef</b> := ( <b>address</b> )? ( # <b>JPointer</b> )?
+<b>JPointer</b> := ( / <b>path</b> )<em>
+<b>path</b> := ( <b>unescaped</b> | <b>escaped</b> )</em>
+<b>escaped</b> := ~0 | ~1
+</pre></p>
+<p>Where <strong>unescaped</strong> can be any character except for <code>/</code> and <code>~</code>. Also, <strong>address</strong> corresponds to any URI that does not use the <code>#</code> symbol, or more precisely to any URI-reference constructed using the following grammar, as defined in the <a href="https://tools.ietf.org/html/rfc3986#section-3.1">official standard</a>:
+<pre>
+<b>address</b> = (<b>scheme</b> : )? <b>hier-part</b> (? <b>query</b> ) 
+</pre></p>
+<h2 id="notation">Notation</h2>
+<p>The Formal Grammar in this specification is given using a simple, visual-based Extended Backus-Naur Form (EBNF) notation, that we define below. </p>
+<p>Each rule in the grammar defines one symbol, in the form</p>
+<pre>
+<b>symbol</b> := expression
+</pre>
+
+<p>For readability we always write non-terminal symbols in blackened font, such as <strong>JSch</strong> or <strong>strRes</strong>. 
+The expression in the right hand side of these rules may match more than one string, and is constructed according to the following operators: </p>
+<ul>
+<li><code>string</code> any non-blackened string that does not use  <code>)</code>, <code>(</code>,  <code>|</code> or <code>?</code> matches precisely against the string. </li>
+</ul>
+<p>We also use brackets, as in <code>(expression)</code>, to specify that the expression inside them is a unit. We can combine units using the following operators</p>
+<ul>
+<li><code>E?</code>: optional <code>E</code>, mathces <code>E</code> or nothing</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>- `A</th>
+<th>B<code>:</code>A<code>or</code>B<code>, matches either</code>A<code>or</code>B`</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>- <code>E*</code>: Matches zero or more ocurrences of <code>E</code>. Also has a higher precedence over `</td>
+<td>`</td>
+</tr>
+</tbody>
+</table></div>
         </div>
 
         <footer class="col-md-12">

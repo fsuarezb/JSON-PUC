@@ -346,7 +346,7 @@ a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
 <h2 id="reference-specification">Reference Specification</h2>
 <p>The idea of a reference such as <code>{"$ref": "#/definitions/person"}</code> is to use the schema that is stored under the result of evaluating the pointer <code>/definitions/person</code> under the same document that is defining the JSON Schema. </p>
 <p>We could also be looking elsewhere for references. In order to do this we need to add the <strong>address</strong> part of the URI in the reference keyword. </p>
-<p>For example, assume that the URI <code>http:db.ing.puc.cl/exampleschema</code> retrieves the following json document: </p>
+<p>For example, assume that the URI <code>http://db.ing.puc.cl/exampleschema</code> retrieves the following json document: </p>
 <pre><code>{
     "definitions": {
         "person": {
@@ -368,7 +368,7 @@ a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
     }
 }</code></pre>
 
-<p>We can mix URIs and JSON Pointers: the reference <code>http:db.ing.puc.cl/exampleschema</code> retrieves this entire schema, but the reference <code>http:db.ing.puc.cl/exampleschema#/definitions/person</code> retrieves only </p>
+<p>We can mix URIs and JSON Pointers: the reference <code>http://db.ing.puc.cl/exampleschema</code> retrieves this entire schema, but the reference <code>http://db.ing.puc.cl/exampleschema#/definitions/person</code> retrieves only </p>
 <pre><code>{
     "type": "object",
     "required": ["first_name", "last_name", "age"],
@@ -382,12 +382,12 @@ a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
 <p>Now if we want to specify again the schema for football players, we can do it as follows: </p>
 <pre><code>{
     "allOf": [
-        {"$ref": "http:db.ing.puc.cl/exampleschema"},
+        {"$ref": "http://db.ing.puc.cl/exampleschema"},
         {
             "type": "object",
             "required": ["current_club"], 
             "properties": {
-             "current_club": {"$ref": "http:db.ing.puc.cl/exampleschema#/definitions/person"}
+             "current_club": {"$ref": "http://db.ing.puc.cl/exampleschema#/definitions/person"}
             }
         } 
     ]
@@ -406,7 +406,32 @@ a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
 <li><code>uriRef</code> starts with the symbol <code>#</code> and <strong>J</strong> validates against <strong>EVAL(R,</strong>uriRef<strong>)</strong>. </li>
 <li><code>uriRef</code> is of the form <code>address#JPointer</code>, the schema retrieved with the URI <code>address</code> is <strong>S'</strong> and <strong>J</strong> validates against <strong>EVAL(S',</strong>JPointer<strong>)</strong>. </li>
 </ul>
-<h2 id="id">ID</h2></div>
+<h2 id="id">ID</h2>
+<p>The JSON Schema specification also includes the option of an <code>id</code> keyword. This keywords has many uses, here we only comment on the most simple of all: setting up a unique identifier for the schema. </p>
+<p>As an example, look at the use of the <code>id</code> keyword in the following schema: </p>
+<pre><code>{
+    "id": "http://db.ing.puc.cl/exampleschema", 
+    "definitions": {
+        "person": {
+            "type": "object",
+            "required": ["first_name", "last_name", "age"],
+            "properties": {
+                "first_name": {"type": "string"},
+                "last_name": {"type": "string"},
+                "age": {"type": "integer"}
+            }
+        }
+        "type": "object",
+        "required": ["team", "league"],
+        "properties": {
+            "name": {"type": "string"},
+            "league": {"type": "string"},
+            "year_founded": {"type": "integer"}
+        }
+    }
+}</code></pre>
+
+<p>This sets up "http://db.ing.puc.cl/exampleschema" as the identifier for the schema. Some validators may choose to retrieve the above schema instead of looking for the schema that the url http://db.ing.puc.cl/exampleschema is pointing at when faced with the keyword <code>{"$ref": "http://db.ing.puc.cl/exampleschema"}</code>, but this is only optional, and therefore the only <em>safe</em> use of the id keyword is when the id of the schema coincides with the document that the id points at.</p></div>
         </div>
 
         <footer class="col-md-12">

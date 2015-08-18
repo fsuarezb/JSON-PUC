@@ -294,10 +294,9 @@ We say that <strong>J</strong> validates against <strong>M</strong> if one of th
 <li>
 <p>for each name/value pair <strong>k</strong> in <strong>M</strong> such that <strong>Compatible(J,k) = true</strong> and <strong>J</strong> validates against <strong>k</strong>. Here we must note that the semantics of <strong>k</strong> is mentioned in each type section</p>
 </li>
-</ul>
-<p>We may also have a multiple type restriction. In this case we say that <strong>J</strong> validates against <strong>M</strong> if the following holds:</p>
-<ul>
-<li><strong>M</strong> has the name/value pair <code>"type: [t<sub>1</sub> ... t<sub>n</sub>]"</code> and <strong>J</strong> type is <strong>t<sub>i</sub></strong> for some <strong>t<sub>i</sub></strong> in <strong>[ t<sub>1</sub>  ...  t<sub>n</sub> ]</strong>.</li>
+<li>
+<p><strong>M</strong> has the name/value pair <code>"type: [t<sub>1</sub> ... t<sub>n</sub>]"</code> and for some <strong>t<sub>i</sub></strong>, <strong>J</strong> is of type <strong>t<sub>i</sub></strong></p>
+</li>
 </ul>
 <h3 id="conclusions">Conclusions</h3>
 <p>Finally we must mention that the use of the <code>type</code> keyword is a highly recommended practice by the community. As we learnt on this section the multiple type instances can be easily simulated using boolean combinations of schemas and doesn't seem to expand the expressibility of JSON Schemas.</p></div>
