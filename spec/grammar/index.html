@@ -84,10 +84,6 @@
                         </li>
                     
                         <li >
-                            <a href="../combined_schemas/">Combined Schemas</a>
-                        </li>
-                    
-                        <li >
                             <a href="../definitions_references/">Definitions & References</a>
                         </li>
                     
@@ -269,21 +265,10 @@ The expression in the right hand side of these rules may match more than one str
 <p>We also use brackets, as in <code>(expression)</code>, to specify that the expression inside them is a unit. We can combine units using the following operators</p>
 <ul>
 <li><code>E?</code>: optional <code>E</code>, mathces <code>E</code> or nothing</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>- `A</th>
-<th>B<code>:</code>A<code>or</code>B<code>, matches either</code>A<code>or</code>B`</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>- <code>E*</code>: Matches zero or more ocurrences of <code>E</code>. Also has a higher precedence over `</td>
-<td>`</td>
-</tr>
-</tbody>
-</table></div>
+<li><code>A | B</code>: <code>A</code> or <code>B</code>, matches either <code>A</code> or <code>B</code></li>
+<li><code>A B</code> <code>A</code> concatenated with <code>B</code>, matches <code>A</code> followed by <code>B</code>. This operator has higher precedence over <code>|</code> </li>
+<li><code>E*</code>: Matches zero or more ocurrences of <code>E</code>. Also has a higher precedence over <code>|</code></li>
+</ul></div>
         </div>
 
         <footer class="col-md-12">

@@ -84,10 +84,6 @@
                         </li>
                     
                         <li >
-                            <a href="../combined_schemas/">Combined Schemas</a>
-                        </li>
-                    
-                        <li >
                             <a href="../definitions_references/">Definitions & References</a>
                         </li>
                     
@@ -146,6 +142,8 @@
     
         <li class="main active"><a href="#generic-keywords">Generic Keywords</a></li>
         
+            <li><a href="#combined-restrictions">Combined Restrictions</a></li>
+        
             <li><a href="#enumerated-values">Enumerated Values</a></li>
         
             <li><a href="#metadata">Metadata</a></li>
@@ -156,7 +154,86 @@
             <div class="col-md-9" role="main">
 
 <h1 id="generic-keywords"><CENTER>Generic Keywords</CENTER></h1>
-<p>JSON Schemas also support keywords that may apply to any JSON type. In this section we will provide the correct use and syntax of these keywords.</p>
+<p>JSON Schemas also support keywords that may apply to any JSON type. In this section we provide the correct use and syntax of these keywords.</p>
+<h2 id="combined-restrictions">Combined Restrictions</h2>
+<p>Sometimes we want to specify more complex constraints that require verifying if a document validates against multiple schemas. JSON Schema allows us to do so using the following keywords: </p>
+<ul>
+<li><a href="#anyof"><code>anyOf</code></a>, which forces the document to validate against <em>at least one</em> of the specified schemas</li>
+<li><a href="#allof"><code>allOf</code></a>, which forces the document to validate against <em>all</em> of the specified schemas</li>
+<li><a href="#oneof"><code>oneOf</code></a>, which forces the document to validate against <em>precisely one</em> of the specified schemas.</li>
+</ul>
+<p>Additionally, we can use:</p>
+<ul>
+<li><a href="#not"><code>not</code></a>, which states that a document does <em>not</em> validate against a specified schema.  </li>
+</ul>
+<p>Below we describe each of the keywords in more detail.</p>
+<h3 id="anyof"><code>anyOf</code></h3>
+<p>The <code>"anyOf"</code> keyword is used to make  document validate against at least one of the listed schemas. For instance, if we were building an application that can accept either strings or integers we could use the following schema to check if the document is of the correct format.</p>
+<pre><code>{
+  "anyOf": [
+    { "type": "string" }, 
+    { "type": "integer" }
+  ]
+}
+</code></pre>
+
+<p>In this case JSON document <code>"This is a string"</code> satisfies the above schema, as does the document <code>72</code>. On the other hand <code>7.42</code> does not satisfy the schema, nor will the document <code>{ "name": "Gary"}</code>.</p>
+<h3 id="allof"><code>allOf</code></h3>
+<p>In order to specify that our document has to conform to several different schemas we use the keyword <code>"allOf"</code>. For instance if we want to accept strings that are in the intersection of two regular expressions it is often simpler to validate against two different schemas than write a single regular expression denoting the intersection. The schema below validates against any string that is a gmail address and that contains a substring <code>"joe"</code>.</p>
+<pre><code>{
+  "allOf": [
+    { "type": "string", "pattern": "^.+@gmail.com$" }, 
+    { "type": "string", "pattern": "^.*joe.*$" }
+  ]
+}
+</code></pre>
+
+<p>Although the example above looks somewhat superficial (and is indeed expressible without using the <code>"allOf"</code> keyword, as all basic examples of <code>"allOf"</code> are), the true usefulness of the <code>"allOf"</code> keyword becomes evident when combined with the <a href="../link"><code>"definition"</code></a> and <a href="../link"><code>"$ref"</code></a> keywords.</p>
+<p>Note that using <code>"allOf"</code> one can easily define schemas that do <em>not</em> validate against any document. For instance the schema below requires the document to be both a string and an integer, which is clearly not possible.</p>
+<pre><code>{
+  "allOf": [
+    { "type": "string" }, 
+    { "type": "integer" }
+  ]
+}
+</code></pre>
+
+<h3 id="oneof"><code>oneOf</code></h3>
+<p>When we want to validate against precisely one schema from a predefined set of schemas we use the <code>"oneOf"</code> keyword. For instance if want to find numbers that are multiples of <code>2</code> or multiples of <code>5</code>, but not both at the same time we could use the following schema.</p>
+<pre><code>{
+  "oneOf": [
+    { "type": "integer", "multipleOf": 2 }, 
+    { "type": "integer", "multipleOf": 5}
+  ]
+}
+</code></pre>
+
+<p>This schema validates against <code>4</code> and <code>15</code>, but it does not validate against <code>10</code>, as it satisfies both of the schemas. Equally, the schema does not validate against <code>3</code>, or any document that is not an integer.</p>
+<h3 id="not"><code>not</code></h3>
+<p>To say that a document does not validate against a certain schema we use the <code>"not"</code> keyword. For instance the schema below validates against any document that is not a string.</p>
+<pre><code>{ "not": { "type": "string" } }  
+</code></pre>
+
+<p>It accepts the document <code>4</code> or <code>{ "name": "Gary" }</code>, but not <code>"name"</code>, or any other string.  </p>
+<h3 id="formal-specification">Formal Specification</h3>
+<p>Combined restrictions <strong>combRes</strong> are formally specified using the following grammar.</p>
+<pre>
+<b>combRes</b> := <b>allOf</b> | <b>anyOf</b>| <b>oneOf</b> | <b>not</b>
+<b>anyOf</b> := "anyOf": [ { <b>JSch</b> } (, { <b>JSch</b> })* ]
+<b>allOf</b> := "allOf": [ { <b>JSch</b> } (, { <b>JSch</b> })* ]
+<b>oneOf</b> := "oneOf": [ { <b>JSch</b> } (, { <b>JSch</b> })* ]
+<b>not</b> := "not": { <b>JSch</b> }
+</pre>
+
+<p>where <strong>JSch</strong> denotes an arbitrary JSON Schema.</p>
+<h3 id="formal-validation">Formal Validation</h3>
+<p>Let <strong>C</strong> be a Combined Restriction and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>C</strong> if:</p>
+<ul>
+<li><strong>C</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>C</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>C</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> conforms to <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>C</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong>.</li>
+</ul>
 <h2 id="enumerated-values">Enumerated Values</h2>
 <p>The <code>"enum"</code> keyword restricts JSON instances to have certain values specified on the value of the operator. Let's take a look the following example:</p>
 <pre><code>{
@@ -181,14 +258,14 @@
 <p>But this one doesn't</p>
 <pre><code>16</code></pre>
 
-<h3 id="formal-specification">Formal Specification</h3>
+<h3 id="formal-specification_1">Formal Specification</h3>
 <p>The <code>"enum"</code> restriction is formally specified using the following grammar.</p>
 <pre>
 <b>enum</b> := "enum": [<b>Jval</b> (, <b>Jval</b>)<sup>*</sup>]
 </pre>
 
 <p>Where <b>Jval</b> can be either a <code>number</code>, a <code>string</code>, an <code>object</code>, an <code>array</code>, a <code>boolean</code> or a <code>null</code> value. Note that each <b>Jval</b> must be different from each other.</p>
-<h3 id="formal-validation">Formal Validation</h3>
+<h3 id="formal-validation_1">Formal Validation</h3>
 <p>Let <strong>S</strong> be Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>S</strong> if the following holds:</p>
 <ul>
 <li><strong>S</strong> has the restriction <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
@@ -217,7 +294,7 @@
     "required": ["first_name", "last_name", "age", "club"]
 }</code></pre>
 
-<p>First, the <code>"$schema"</code> keyword specifies that the current schema follows the specification of the version 3 of JSON Schema. We can provide different versions deppending of our requirements. The <code>"title"</code> keyword is useful to give a name to the schema. Similarly, the <code>"description"</code> keyword is useful to give a short description of what kind of documents the schema will accept. Finally the <code>"default"</code> keyword can be used to specify a default value for the document if an hipothetical validator reads a missing value as input.</p></div>
+<p>First, the <code>"$schema"</code> keyword specifies that the current schema follows the specification of the version 3 of JSON Schema. We can provide different versions deppending of our requirements. The <code>"title"</code> keyword is useful to give a name to the schema. Similarly, the <code>"description"</code> keyword is useful to give a short description of what kind of documents the schema accepts. Finally the <code>"default"</code> keyword can be used to specify a default value for the document if an hipothetical validator reads a missing value as input.</p></div>
         </div>
 
         <footer class="col-md-12">
