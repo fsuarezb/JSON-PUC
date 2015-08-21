@@ -70,11 +70,11 @@
                         </li>
                     
                         <li >
-                            <a href="../arrays_objects/">Arrays & Objects</a>
+                            <a href="../arrays/">Arrays</a>
                         </li>
                     
                         <li >
-                            <a href="../definitions_references/">Definitions & References</a>
+                            <a href="../objects/">Objects</a>
                         </li>
                     
                         <li class="active">
@@ -83,6 +83,10 @@
                     
                         <li >
                             <a href="../generic_keywords/">Generic Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../definitions_references/">Definitions & References</a>
                         </li>
                     
                     </ul>
@@ -111,7 +115,7 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../definitions_references/">
+                    <a rel="next" href="../objects/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
@@ -141,16 +145,16 @@
 
 <h1 id="multiple-types"><CENTER>Multiple Types</CENTER></h1>
 <p>So far we have only described how to specify types uniquely. But we could also specify that a certain document may be any number of types, such as string or integer, object or array, etc.</p>
-<p>The basic declaration of multiple types is through the <code>"type"</code> keyword, where we could now have an array containing different types. For example, the following schema specifies integers and strings: </p>
+<p>The basic declaration of multiple types is through the <code>"type"</code> keyword, where we can now have an array containing different types. For example, the following schema specifies integers and strings: </p>
 <pre><code>{
     "type": ["integer", "string"]
 }</code></pre>
 
-<p>And of course we have the empty schema, that specifies all possible types of JSON documents </p>
+<p>In addition, we also have the empty schema, that specifies all possible types of JSON documents </p>
 <pre><code>{}</code></pre>
 
 <h2 id="how-restrictions-work-under-multiple-types">How restrictions work under multiple types</h2>
-<p>The Keyword restrictions work a little different where multiple (or no) types are defined. Recall how, in the schema: </p>
+<p>The Keyword restrictions work a little different when multiple (or no) types are defined. Recall how, in the schema: </p>
 <pre><code>{
     "type": "string",
     "minLength": 4
@@ -162,7 +166,7 @@
     "minimum": 2
 }</code></pre>
 
-<p>the keyword <code>"minimum": 2</code> imposes the restriction that all documents specified by it must be greater or equal than 2 (al document specified are integers).</p>
+<p>the keyword <code>"minimum": 2</code> imposes the restriction that all documents specified by it must be greater than or equal to 2 (all documents specified by the schema are integers).</p>
 <p>In schemas that specify either integer or strings these restrictions work in a slightly different way. Restrictions are only checked when the document is of a type that is compatible with the keyword.</p>
 <p>Consider for example the schema:</p>
 <pre><code>{
@@ -186,7 +190,7 @@
 }</code></pre>
 
 <p>In general, when multiple (or no) types are defined in the schema, the rule for restrictions is as follows: each keyword restriction only applies when validating documents that are of the type that is compatible with the keyword. </p>
-<p>As another example, the following schema specifies json documents that are either arrays, strings, integers, numbers, boolean or nulls, and also objects that have the property <code>"I_apply_only_to_objects"</code>: </p>
+<p>As another example, the following schema specifies JSON documents that are either arrays, strings, integers, numbers, boolean or nulls, and also objects that have the property <code>"I_apply_only_to_objects"</code>: </p>
 <pre><code>{
     "required": ["I_apply_only_to_objects"]
 }</code></pre>
@@ -256,8 +260,7 @@
 
 <p>Where as usual each of the words replaced for the  <strong>multRes</strong> tokens is unique. </p>
 <h3 id="formal-validation">Formal Validation</h3>
-<p>We define the function <strong>Compatible(J,k)</strong> that takes a JSON document <strong>J</strong> and a 
-key/value pair <strong>k</strong> of the form <code>key: value</code> and returns <strong>true</strong> if <code>key</code> is a string in the following list:</p>
+<p>We define the function <strong>Compatible(J,k)</strong> that takes a JSON document <strong>J</strong> and a key/value pair <strong>k</strong> of the form <code>key: value</code> and returns <strong>true</strong> if <code>key</code> is a string in the following list:</p>
 <table>
 <thead>
 <tr>
@@ -271,21 +274,20 @@ key/value pair <strong>k</strong> of the form <code>key: value</code> and return
 </tbody>
 </table>
 <p>and <code>key</code> is compatible to the type of <strong>J</strong> according to the compatibility table above. Otherwise, <strong>Compatible(J,k)</strong> returns <strong>false</strong>. </p>
-<p>Let <strong>M</strong> be a multiple type Schema and <strong>J</strong> a JSON document. 
-We say that <strong>J</strong> validates against <strong>M</strong> if one of the following holds:</p>
+<p>Let <strong>M</strong> be a multiple type Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>M</strong> if one of the following holds:</p>
 <ul>
 <li>
 <p>for each name/value pair <strong>k</strong> in <strong>M</strong> we have that <strong>Compatible(J,k) = false</strong>  </p>
 </li>
 <li>
-<p>for each name/value pair <strong>k</strong> in <strong>M</strong> such that <strong>Compatible(J,k) = true</strong> and <strong>J</strong> validates against <strong>k</strong>. Here we must note that the semantics of <strong>k</strong> is mentioned in each type section</p>
+<p>for each name/value pair <strong>k</strong> in <strong>M</strong> such that <strong>Compatible(J,k) = true</strong> we have that <strong>J</strong> validates against <strong>k</strong>. Here we must note that the semantics of <strong>k</strong> is mentioned in each type section</p>
 </li>
 <li>
 <p><strong>M</strong> has the name/value pair <code>"type: [t<sub>1</sub> ... t<sub>n</sub>]"</code> and for some <strong>t<sub>i</sub></strong>, <strong>J</strong> is of type <strong>t<sub>i</sub></strong></p>
 </li>
 </ul>
 <h3 id="conclusions">Conclusions</h3>
-<p>Finally we must mention that the use of the <code>type</code> keyword is a highly recommended practice by the community. As we learnt on this section the multiple type instances can be easily simulated using boolean combinations of schemas and doesn't seem to expand the expressibility of JSON Schemas.</p></div>
+<p>Finally we must mention that the use of the <code>type</code> keyword is a highly recommended practice by the community. As we learnt in this section the multiple type instances can be easily simulated using boolean combinations of schemas and do not seem to expand the expressive power of JSON Schemas.</p></div>
         </div>
 
         <footer class="col-md-12">

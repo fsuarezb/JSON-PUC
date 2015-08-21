@@ -70,11 +70,11 @@
                         </li>
                     
                         <li >
-                            <a href="../arrays_objects/">Arrays & Objects</a>
+                            <a href="../arrays/">Arrays</a>
                         </li>
                     
                         <li >
-                            <a href="../definitions_references/">Definitions & References</a>
+                            <a href="../objects/">Objects</a>
                         </li>
                     
                         <li >
@@ -83,6 +83,10 @@
                     
                         <li class="active">
                             <a href="./">Generic Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../definitions_references/">Definitions & References</a>
                         </li>
                     
                     </ul>
@@ -116,7 +120,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../grammar/">
+                    <a rel="prev" href="../definitions_references/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -167,7 +171,7 @@
 }
 </code></pre>
 
-<p>In this case JSON document <code>"This is a string"</code> satisfies the above schema, as does the document <code>72</code>. On the other hand <code>7.42</code> does not satisfy the schema, nor will the document <code>{ "name": "Gary"}</code>.</p>
+<p>In this case JSON document <code>"This is a string"</code> satisfies the above schema, as does the document <code>72</code>. On the other hand <code>7.42</code> does not satisfy the schema, nor does the document <code>{ "name": "Gary"}</code>.</p>
 <h3 id="allof"><code>allOf</code></h3>
 <p>In order to specify that our document has to conform to several different schemas we use the keyword <code>"allOf"</code>. For instance if we want to accept strings that are in the intersection of two regular expressions it is often simpler to validate against two different schemas than write a single regular expression denoting the intersection. The schema below validates against any string that is a gmail address and that contains a substring <code>"joe"</code>.</p>
 <pre><code>{
@@ -225,27 +229,27 @@
 <li><strong>C</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong>.</li>
 </ul>
 <h2 id="enumerated-values">Enumerated Values</h2>
-<p>The <code>"enum"</code> keyword restricts JSON instances to have certain values specified on the value of the operator. Let's take a look the following example:</p>
+<p>The <code>"enum"</code> keyword restricts JSON instances to have certain values specified in an array following the keyword. Let's take a look the following example:</p>
 <pre><code>{
  "type": "string",
  "enum": ["Inter Milan", "AC Milan", "Juventus", "Roma"]
 }</code></pre>
 
-<p>Here we are asking for exclusively JSON strings with the values <code>"Inter Milan"</code>, <code>"AC Milan"</code>, <code>"Juventus"</code> or <code>"Roma"</code>. For example the next JSON instance validates against the schema</p>
+<p>Here we are asking for JSON strings with the values <code>"Inter Milan"</code>, <code>"AC Milan"</code>, <code>"Juventus"</code> or <code>"Roma"</code>. Apart from these, no other JSON string will be validated against the schema. For example the following JSON instance validates against the schema</p>
 <pre><code>"AC Milan"</code></pre>
 
-<p>But this one doesn't</p>
+<p>But this one does not</p>
 <pre><code>"Fiorentina"</code></pre>
 
-<p>Furthermore, we may give different types values to the list</p>
+<p>The <code>enum</code> keyword also allows us have different types in the list of allowed values. Consider the schema:</p>
 <pre><code>{
  "enum": ["Two", 2, true, null]
 }</code></pre>
 
-<p>The following JSON validates against the  schema</p>
+<p>Then the following JSON validates against the  schema:</p>
 <pre><code>null</code></pre>
 
-<p>But this one doesn't</p>
+<p>But this one does not:</p>
 <pre><code>16</code></pre>
 
 <h3 id="formal-specification_1">Formal Specification</h3>
@@ -254,14 +258,14 @@
 <b>enum</b> := "enum": [<b>Jval</b> (, <b>Jval</b>)<sup>*</sup>]
 </pre>
 
-<p>Where <b>Jval</b> can be either a <code>number</code>, a <code>string</code>, an <code>object</code>, an <code>array</code>, a <code>boolean</code> or a <code>null</code> value. Note that each <b>Jval</b> must be different from each other.</p>
+<p>Where <b>Jval</b> can be either a <code>number</code>, a <code>string</code>, an <code>object</code>, an <code>array</code>, a <code>boolean</code> or a <code>null</code> value. Note that each <b>Jval</b> must be different from the the other values appearing in the array.</p>
 <h3 id="formal-validation_1">Formal Validation</h3>
 <p>Let <strong>S</strong> be Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>S</strong> if the following holds:</p>
 <ul>
-<li><strong>S</strong> has the restriction <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
+<li><strong>S</strong> has the restriction <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> equals <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
 </ul>
 <h2 id="metadata">Metadata</h2>
-<p>These keywords just represent metadata of the schema and don't have a very strong semantic. However,they are good practices both for programmers and users to provide. These keywords can be either <code>"title"</code>, <code>"description"</code>, <code>"default"</code> or <code>"$schema"</code>. Let's take a look to the following example</p>
+<p>The following group of keywords represent metadata of the schema and does not have a very strong semantic. However, it is a good practice both for programmers and users to provide this information. These keywords can be either <code>"title"</code>, <code>"description"</code>, <code>"default"</code> or <code>"$schema"</code>. Let us take a look to the following example</p>
 <pre><code>{
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Player schema",
@@ -284,7 +288,7 @@
     "required": ["first_name", "last_name", "age", "club"]
 }</code></pre>
 
-<p>First, the <code>"$schema"</code> keyword specifies that the current schema follows the specification of the version 3 of JSON Schema. We can provide different versions deppending of our requirements. The <code>"title"</code> keyword is useful to give a name to the schema. Similarly, the <code>"description"</code> keyword is useful to give a short description of what kind of documents the schema accepts. Finally the <code>"default"</code> keyword can be used to specify a default value for the document if an hipothetical validator reads a missing value as input.</p></div>
+<p>First, the <code>"$schema"</code> keyword specifies that the current schema follows the specification of the version 3 of JSON Schema. We can provide different versions deppending of our requirements. The <code>"title"</code> keyword is useful to give a name to the schema. Similarly, the <code>"description"</code> keyword is useful to give a short description of what kind of documents the schema accepts. Finally the <code>"default"</code> keyword can be used to specify a default value for the document if a hipothetical validator reads a missing value as input.</p></div>
         </div>
 
         <footer class="col-md-12">

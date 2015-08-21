@@ -70,11 +70,11 @@
                         </li>
                     
                         <li >
-                            <a href="../arrays_objects/">Arrays & Objects</a>
+                            <a href="../arrays/">Arrays</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Definitions & References</a>
+                        <li >
+                            <a href="../objects/">Objects</a>
                         </li>
                     
                         <li >
@@ -83,6 +83,10 @@
                     
                         <li >
                             <a href="../generic_keywords/">Generic Keywords</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Definitions & References</a>
                         </li>
                     
                     </ul>
@@ -111,12 +115,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../arrays_objects/">
+                    <a rel="next" href="../generic_keywords/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../multiple_types/">
+                    <a rel="prev" href="../grammar/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -148,7 +152,7 @@
             <div class="col-md-9" role="main">
 
 <h1 id="definitions-references"><CENTER>Definitions &amp; References</CENTER></h1>
-<p>The JSON Schema specification also allows us to define auxiliary schema in order to be reused and combined later on the definition. </p>
+<p>The JSON Schema specification also allows us to define auxiliary schema in order to be reused and combined later on in the definition. </p>
 <p>This feature involves two steps: First we need to define the subschemas that shall be used later on, and then we need a standard for calling and reusing these definitions. </p>
 <h2 id="definitions">Definitions</h2>
 <p>To establish a difference between the main schema and the auxiliary definitions we adopt the convention that every JSON Schema document consists of two parts. A JSON Schema, and a set of definitions. </p>
@@ -302,7 +306,7 @@ schema under <em>person</em> and the schema under <em>football_team</em>. For ex
 <p>Before we can formally explain how the $ref keyword works we need to talk a bit about JSON pointers. The whole idea of this tool is to use a URI to specify a pointer to a given section of a JSON Document. We just use a fraction of what is defined in the
 <a href="https://tools.ietf.org/html/rfc6901">Official Specification</a>.</p>
 <h3 id="formal-specification_1">Formal Specification</h3>
-<p>For the purprose of JSON pointer, we can think of a uri as a string of the form 
+<p>For the purprose of JSON pointer, we can think of a URI as a string of the form 
 <pre>
 <b>uri</b> = ( <b>address</b> )? ( # <b>JPointer</b> )?
 </pre></p>
@@ -316,12 +320,11 @@ schema under <em>person</em> and the schema under <em>football_team</em>. For ex
 <b>path</b> := ( <b>unescaped</b> | <b>escaped</b> )</em>
 <b>escaped</b> := ~0 | ~1
 </pre></p>
-<p>Where <strong>unescaped</strong> can be any character except for <code>/</code> and <code>~</code>. To reresent these characters we use the <strong>escaped</strong> <code>~0</code> for <code>~</code>and <code>~1</code> for <code>/</code>. </p>
+<p>Where <strong>unescaped</strong> can be any character except for <code>/</code> and <code>~</code>. To represent these characters we use the <strong>escaped</strong> <code>~0</code> for <code>~</code>and <code>~1</code> for <code>/</code>. </p>
 <p>For example, <code>/definitions/person</code> is a JSON Pointer, and so is <code>/pointer/0/with/numbers/12</code> and <code>pointer/with/~1escaped/~0chars</code>. Note how the last is actually a representation of the string <code>pointer/with//escaped/~chars</code>.</p>
 <p>If <strong>path</strong> is a string of the form above, we say that <strong>rep(path)</strong> is the string resulting of replacing first each character <code>~1</code> by <code>/</code> and then each character <code>~0</code> by <code>~</code>.</p>
 <h3 id="json-pointer-evaluation">Json Pointer Evaluation</h3>
-<p>Let <strong>J</strong> be a JSON document. JSON Pointers are intended to extract a part of <strong>J</strong> that is specifically indexed by the pointer. Formally, we define the function <strong>EVAL()</strong> that takes 
-a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
+<p>Let <strong>J</strong> be a JSON document. JSON Pointers are intended to extract a part of <strong>J</strong> that is specifically indexed by the pointer. Formally, we define the function <strong>EVAL()</strong> that takes a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
 <pre>
 <b>EVAL(J,JPointer)</b> = 
             <b>J</b>, if <b>JPointer</b> is the empty string, or 

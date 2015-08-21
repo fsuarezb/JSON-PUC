@@ -70,11 +70,11 @@
                         </li>
                     
                         <li >
-                            <a href="../arrays_objects/">Arrays & Objects</a>
+                            <a href="../arrays/">Arrays</a>
                         </li>
                     
                         <li >
-                            <a href="../definitions_references/">Definitions & References</a>
+                            <a href="../objects/">Objects</a>
                         </li>
                     
                         <li >
@@ -83,6 +83,10 @@
                     
                         <li >
                             <a href="../generic_keywords/">Generic Keywords</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../definitions_references/">Definitions & References</a>
                         </li>
                     
                     </ul>
@@ -132,9 +136,11 @@
     
         <li class="main active"><a href="#semantics">Semantics</a></li>
         
-            <li><a href="#type-restricted-schemas">Type Restricted Schemas</a></li>
+            <li><a href="#definitions">Definitions</a></li>
         
-            <li><a href="#free-type-schemas">Free Type Schemas</a></li>
+            <li><a href="#json-reference">JSON Reference</a></li>
+        
+            <li><a href="#validation">Validation</a></li>
         
     
     </ul>
@@ -143,139 +149,11 @@
 
 <h1 id="semantics"><CENTER>Semantics</CENTER></h1>
 <p><CENTER>A formal specification of how JSON Documents validate against a JSON Schema Document</CENTER></p>
-<p>In this section we present a formal specification of how JSON Schema restrictions are validated against an arbitraty JSON Document. As we mentioned in the lat section, a JSON Schema can be seen as a set of restrictions for JSON Documents. In this context, we divide the semantics in two cases:</p>
-<ul>
-<li><a href="#type-restricted-schemas"><code>When type is restricted</code></a></li>
-<li><a href="#free-type-schemas"><code>When type is not restricted</code></a></li>
-</ul>
-<p>For this, we should define some distinctions between schemas depending on the presence <code>"type"</code> restriction and it's value. These new definitions are represented in the following table:</p>
-<table>
-<thead>
-<tr>
-<th>schema</th>
-<th>type restriction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>String Schema</td>
-<td><code>"type": "string"</code></td>
-</tr>
-<tr>
-<td>Numeric Schema</td>
-<td><code>"type": "integer"</code>, <code>"type": "number"</code></td>
-</tr>
-<tr>
-<td>Boolean Schema</td>
-<td><code>"type": "boolean"</code></td>
-</tr>
-<tr>
-<td>Null Schema</td>
-<td><code>"type": "null"</code></td>
-</tr>
-<tr>
-<td>Array Schema</td>
-<td><code>"type": "array"</code></td>
-</tr>
-<tr>
-<td>Object Schema</td>
-<td><code>"type": "object"</code></td>
-</tr>
-<tr>
-<td>Multiple Schema</td>
-<td><code>"type": [t<sub>1</sub> . . . t<sub>n</sub>]</code> or no type restriction present</td>
-</tr>
-</tbody>
-</table>
-<h2 id="type-restricted-schemas">Type Restricted Schemas</h2>
-<h3 id="strings-restrictions">Strings Restrictions</h3>
-<p>Let <strong>S</strong> be a String Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>S</strong> if for each key:value pair <strong>k</strong> in <strong>S</strong> one of the following holds:</p>
-<ul>
-<li><strong>k</strong> is <code>"type": "string"</code> and <strong>J</strong> is a string</li>
-<li><strong>k</strong> is of the form <code>"minLength" : n</code> and <strong>J</strong> is a string of length at least <strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"maxLength" : n</code> and <strong>J</strong> is a string of length at most <strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"pattern" : r</code> and <strong>J</strong> is a string that matches the regular expression <strong>r</strong></li>
-<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong>.</li>
-</ul>
-<h3 id="numeric-restrictions">Numeric Restrictions</h3>
-<p>Let <strong>N</strong> be a numeric schema and <strong>J</strong> a JSON document. Then <strong>N</strong> validates against <strong>J</strong> if for each key:value pair <strong>k</strong> in <strong>N</strong>, one of the following holds: </p>
-<ul>
-<li><strong>k</strong> is <code>"type":"number"</code> and <strong>J</strong> is a number, or</li>
-<li><strong>k</strong> is <code>"type":"integer"</code> and <strong>J</strong> is an integer number (a number without the decimal <code>.</code> marker), or</li>
-<li><strong>k</strong> is <code>"multipleOf": n</code>, for some number <strong>n</strong>, and <strong>J</strong> is a number that is a multpiple of <strong>n</strong>, or </li>
-<li><strong>k</strong> is <code>"minimum": n</code>, for some number <strong>n</strong>, and <strong>J</strong> is a number that is greater than or equal to <strong>n</strong>, or</li>
-<li><strong>k</strong> is <code>"maximum": m</code>, for some number <strong>m</strong>, and <strong>J</strong> is a number that is lower than or equal to <strong>m</strong>, or</li>
-<li><strong>k</strong> is <code>"exclusiveMinimum": true</code>, the pair <code>"minimum": n</code> for some number <strong>n</strong> is also in <strong>N</strong>, and <strong>J</strong> is a number that is greater than <strong>n</strong>, or</li>
-<li><strong>k</strong> is <code>"exclusiveMaximum": true</code>, the pair <code>"maximum": m</code> for some number <strong>m</strong> is also in <strong>N</strong>, and <strong>J</strong> is a number that is lower than <strong>m</strong></li>
-<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong></li>
-<li><strong>k</strong> is of the form <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
-</ul>
-<h3 id="boolean-restrictions">Boolean Restrictions</h3>
-<p>Let <strong>B</strong> be a Boolean Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>B</strong> if for each key:value pair <strong>k</strong> in <strong>B</strong> one of the following holds:</p>
-<ul>
-<li><strong>k</strong> is <code>"type": "boolean"</code> and <strong>J</strong> is either <strong>true</strong> or <strong>false</strong></li>
-<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong></li>
-<li><strong>k</strong> is of the form <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
-</ul>
-<h3 id="null-restrictions">Null Restrictions</h3>
-<p>Let <strong>Nl</strong> be a Null Schema and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>Nl</strong> if for each key:value pair <strong>k</strong> in <strong>Nl</strong> one of the following holds:</p>
-<ul>
-<li><strong>k</strong> is <code>"type": "null"</code> and <strong>J</strong> equals <strong>null</strong></li>
-<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong></li>
-<li><strong>k</strong> is of the form <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
-</ul>
-<h3 id="array-restrictions">Array Restrictions</h3>
-<p>Let <b>A</b> be an Array Schema and <b>J</b> a JSON document. We say that <b>J</b> validates against <b>A</b> if for each key:value pair <b>k</b> in <b>A</b> one of the following holds:</p>
-<ul>
-<li><b>k</b> is <code>"type": "array"</code> and <b>J</b> is an array</li>
-<li><b>k</b> is <code>"items": s</code> and <b>J</b> is an array such that every element validates against <strong>s</strong></li>
-<li><b>k</b> is <code>"items": [s<sub>1</sub> , ... , s<sub>n</sub>]</code> and <b>J</b> is an array <code>[a<sub>1</sub> , ... , a<sub>m</sub>]</code> such that every element <strong>a<sub>i</sub></strong> validates against <strong>s<sub>i</sub></strong> with <strong>i</strong> ≤ Min(<strong>m</strong>,<strong>n</strong>).</li>
-<li><b>k</b> is <code>"additionalItems": false</code>, there is a key:value pair <code>"items": [s<sub>1</sub> , ... , s<sub>n</sub>]</code> in <strong>A</strong> and <strong>J</strong> is an array with at most n elements. </li>
-<li><b>k</b> is <code>"minItems": n</code> and <b>J</b> is an array with at least n elements</li>
-<li><b>k</b> is <code>"maxItems": n</code> and <b>J</b> is an array with at most n elements</li>
-<li><b>k</b> is <code>"uniqueItems": true</code> and <b>J</b> is an array with all elements different from each other</li>
-<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong></li>
-<li><strong>k</strong> is of the form <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
-</ul>
-<h3 id="object-restrictions">Object Restrictions</h3>
-<p>Let <b>O</b> be an object Schema and <b>J</b> a JSON document. We say that a keyword <strong>k</strong> appears in <strong>J</strong> is <strong>J</strong> contains a key:value pair of the form <strong>k: j'</strong>, for some document <strong>j'</strong>. </p>
-<p>We say that <b>J</b> validates against <b>O</b> if for each key:value pair <b>k</b> in <b>O</b> one of the following holds:</p>
-<ul>
-<li><strong>k</strong> is of the form <code>"type": "object"</code> and <b>J</b> is an object</li>
-<li><strong>k</strong> is of the form <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k' = k<sub>i</sub></b> for some <strong>i</strong> in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
-<li><strong>k</strong> is of the form <code>"additionalProperties": false</code> and <b>J</b> is an object such that every keyword in <b>J</b> is mentioned in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code></li>
-<li><strong>k</strong> is of the form <code>"additionalProperties": true</code> and <b>J</b> is an object</li>
-<li><strong>k</strong> is of the form <code>"additionalProperties": s</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b> such that <b>k'</b> is different from every <b>k<sub>i</sub></b></b> in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> we have that <b>j'</b> satisfies <b>s</b></li>
-<li><strong>k</strong> is of the form <code>"required": [k<sub>1</sub> , ... , k<sub>n</sub>]</code> and each <b>k<sub>i</sub></b></b> appears in <strong>J</strong>. </li>
-<li><strong>k</strong> is of the form <code>"minProperties": n</code> and <b>J</b> is an object with at least <strong>n</strong> key:value pairs</li>
-<li><strong>k</strong> is of the form <code>"maxProperties": n</code> and <b>J</b> is an object with at most <strong>n</strong> key:value pairs</li>
-<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: [k<sub>1</sub>], ... , k<sub>n</sub>: [k<sub>n</sub>]}</code> and <b>J</b> is an object such that if <strong>k<sub>i</sub></strong> appears on <b>J</b> then every keyword in <strong>[k<sub>i</sub>]</strong> appears in <b>J</b></li>
-<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code>  and <b>J</b> is an object such that if <b>k<sub>i</sub></b> appears on <b>J</b> then <b>J</b> must satisfy <b>s<sub>i</sub></b></li>
-<li><strong>k</strong> is of the form <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object such that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  regexp<sub>i</sub> for some i in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
-<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
-<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong></li>
-<li><strong>k</strong> is of the form <code>"enum": [val<sub>1</sub> , ... , val<sub>n]</code> and <strong>J</strong> is any <strong>val<sub>i</sub></strong> for some <strong>i</strong> in [ <strong>1</strong> , ..., <strong>n</strong> ].</li>
-</ul>
-<h2 id="free-type-schemas">Free Type Schemas</h2>
-<p>In this case we may have two kinds of schemas. On one hand, we coud have schemas containing the <code>"type": [t<sub>1</sub> . . . t<sub>n</sub>]</code> restriction. On the other hand, we could have schemas without any <code>"type"</code> restriction on them. </p>
-<p>But before specifying the semantics for these validation instances we must define a couple of structures first. Consider the following compatibility table:</p>
+<p>In this section we present a formal specification of how JSON Schema restrictions are validated against an arbitraty JSON Document. The following rules for formal validations are general, and thus there is no difference between those schemas whose type is specified and that whose type is not specified. </p>
+<p>But before specifying the semantics for these validation instances we must define a couple of structures first.</p>
+<h3 id="definitions">Definitions</h3>
+<p>Let <b>J</b> be a JSON document. We say that a keyword <strong>k</strong> appears in <strong>J</strong> is <strong>J</strong> contains a key:value pair of the form <strong>k: j'</strong>, for some document <strong>j'</strong>. </p>
+<p>Next, consider the following compatibility table:</p>
 <table>
 <thead>
 <tr>
@@ -314,7 +192,7 @@
 </tr>
 </tbody>
 </table>
-<p>We define the function <strong>Compatible(J,k)</strong> that takes a JSON document <strong>J</strong> and a 
+<p>We define the function <strong>Compatible(J,k)</strong> as the function that receives a JSON document <strong>J</strong> and a 
 key/value pair <strong>k</strong> of the form <code>key: value</code> and returns <strong>true</strong> if <code>key</code> is a string in the following list:</p>
 <table>
 <thead>
@@ -329,19 +207,77 @@ key/value pair <strong>k</strong> of the form <code>key: value</code> and return
 </tbody>
 </table>
 <p>and <code>key</code> is compatible to the type of <strong>J</strong> according to the compatibility table above. Otherwise, <strong>Compatible(J,k)</strong> returns <strong>false</strong>. </p>
-<p>Let <strong>M</strong> be a multiple type Schema and <strong>J</strong> a JSON document. 
-We say that <strong>J</strong> validates against <strong>M</strong> if one of the following holds:</p>
+<h3 id="json-reference">JSON Reference</h3>
+<p>Let <strong>J</strong> be a JSON document. JSON Pointers are intended to extract a part of <strong>J</strong> that is specifically indexed by the pointer. Formally, we define the function <strong>EVAL()</strong> that takes 
+a JSON Document and a JSON Pointer and delivers a subset of <em>J</em>: </p>
+<pre>
+<b>EVAL(J,JPointer)</b> = 
+            <b>J</b>, if <b>JPointer</b> is the empty string, or 
+            <b>EVAL(J[rep(key)],JP)</b>, if <b>J</b> is an object and <b>JPointer</b> is of the form <b>JP/key</b>, or 
+            <b>EVAL(J[n],JP)</b>, if <b>JPointer</b> is an array and <b>JPointer</b> is of the form <b>JP/n</b>, where n is the base-10 representation of a natural number. 
+</pre>
+
+<p>Let <strong>R</strong> be a JSON Reference of the form <code>"$ref": uriRef</code>, <strong>S</strong> a JSON schema document and <strong>J</strong> a JSON document. Then we say that <strong>J</strong> validates against <strong>R</strong> under <strong>S</strong> if: </p>
 <ul>
-<li>
-<p>for each name/value pair <strong>k</strong> in <strong>M</strong> we have that <strong>Compatible(J,k) = false</strong>  </p>
-</li>
-<li>
-<p>for each name/value pair <strong>k</strong> in <strong>M</strong> such that <strong>Compatible(J,k) = true</strong> and <strong>J</strong> validates against <strong>k</strong>. Here we must note that the semantics of <strong>k</strong> is mentioned in each type section</p>
-</li>
+<li><code>uriRef</code> does not contains the symbol <code>#</code>, and <strong>J</strong> validates against the schema retrieved by the URI in <code>uriRef</code></li>
+<li><code>uriRef</code> starts with the symbol <code>#</code> and <strong>J</strong> validates against <strong>EVAL(R,</strong>S<strong>)</strong>. </li>
+<li><code>uriRef</code> is of the form <code>address#JPointer</code>, the schema retrieved with the URI <code>address</code> is <strong>S'</strong> and <strong>J</strong> validates against <strong>EVAL(S',</strong>JPointer<strong>)</strong>. </li>
 </ul>
-<p>We may also have a multiple type restriction. In this case we say that <strong>J</strong> validates against <strong>M</strong> if the following holds:</p>
+<h2 id="validation">Validation</h2>
+<p>Let <strong>S</strong> be a JSON Schema and <strong>J</strong> a JSON document. 
+We say that <strong>J</strong> validates against <strong>S</strong> if one of the following holds: </p>
 <ul>
-<li><strong>M</strong> has the name/value pair <code>"type: [t<sub>1</sub> ... t<sub>n</sub>]"</code> and <strong>J</strong> type is <strong>t<sub>i</sub></strong> for some <strong>t<sub>i</sub></strong> in <strong>[ t<sub>1</sub>  ...  t<sub>n</sub> ]</strong>.</li>
+<li>One of the key:value pairs in <strong>S</strong> is a JSON reference <strong>R</strong>, and <strong>J</strong> validates against <strong>R</strong> under <strong>D</strong>, where <strong>D</strong> is the JSON schema document that contains <strong>S</strong></li>
+<li><strong>S</strong> does not contain a JSON Reference, and for each key:value pair <strong>k</strong> in <strong>S</strong> such that <strong>Compatible(J,k) = true</strong> we have that <strong>J</strong> validates against <strong>k</strong>. </li>
+</ul>
+<p>In turn, let <strong>k</strong> be a key:value pair and <strong>J</strong> a JSON document. We say that <strong>J</strong> validates against <strong>k</strong> if one of the following holds: </p>
+<h3 id="general-restrictions">General Restrictions</h3>
+<ul>
+<li><strong>k</strong> is <code>"type: [t<sub>1</sub>, ... ,t<sub>n</sub>]"</code> and the type of <strong>J</strong> is <strong>t<sub>i</sub></strong> for some <strong>t<sub>i</sub></strong> in <strong>{ t<sub>1</sub>,  ...,  t<sub>n</sub> }</strong>.</li>
+<li><strong>k</strong> is <code>"enum": [j<sub>1</sub>, ... ,j<sub>n</sub>] </code> and <strong>J</strong> = <strong>j<sub>i</sub></strong> for some <strong>j<sub>i</sub></strong> in <strong>{ j<sub>1</sub>,  ...,  j<sub>n</sub> }</strong>.</li>
+</ul>
+<h3 id="strings-restrictions">Strings Restrictions</h3>
+<ul>
+<li><strong>k</strong> is of the form <code>"minLength" : n</code> and <strong>J</strong> is a string of length at least <strong>n</strong></li>
+<li><strong>k</strong> is of the form <code>"maxLength" : n</code> and <strong>J</strong> is a string of length at most <strong>n</strong></li>
+<li><strong>k</strong> is of the form <code>"pattern" : r</code> and <strong>J</strong> is a string that matches the regular expression <strong>r</strong></li>
+</ul>
+<h3 id="numeric-restrictions">Numeric Restrictions</h3>
+<ul>
+<li><strong>k</strong> is <code>"multipleOf": n</code>, for some number <strong>n</strong>, and <strong>J</strong> is a number that is a multpiple of <strong>n</strong>, or </li>
+<li><strong>k</strong> is <code>"minimum": n</code>, for some number <strong>n</strong>, and <strong>J</strong> is a number that is greater than or equal to <strong>n</strong>, or</li>
+<li><strong>k</strong> is <code>"maximum": m</code>, for some number <strong>m</strong>, and <strong>J</strong> is a number that is lower than or equal to <strong>m</strong>, or</li>
+<li><strong>k</strong> is <code>"exclusiveMinimum": true</code>, the pair <code>"minimum": n</code> for some number <strong>n</strong> is also in <strong>N</strong>, and <strong>J</strong> is a number that is greater than <strong>n</strong>, or</li>
+<li><strong>k</strong> is <code>"exclusiveMaximum": true</code>, the pair <code>"maximum": m</code> for some number <strong>m</strong> is also in <strong>N</strong>, and <strong>J</strong> is a number that is lower than <strong>m</strong></li>
+</ul>
+<h3 id="arrays-restrictions">Arrays Restrictions</h3>
+<ul>
+<li><b>k</b> is <code>"items": s</code> and <b>J</b> is an array such that every element validates against <strong>s</strong></li>
+<li><b>k</b> is <code>"items": [s<sub>1</sub> , ... , s<sub>n</sub>]</code> and <b>J</b> is an array <code>[a<sub>1</sub> , ... , a<sub>m</sub>]</code> such that every element <strong>a<sub>i</sub></strong> validates against <strong>s<sub>i</sub></strong> with <strong>i</strong> ≤ Min(<strong>m</strong>,<strong>n</strong>).</li>
+<li><b>k</b> is <code>"additionalItems": false</code>, there is a key:value pair <code>"items": [s<sub>1</sub> , ... , s<sub>n</sub>]</code> in <strong>A</strong> and <strong>J</strong> is an array with at most n elements. </li>
+<li><b>k</b> is <code>"minItems": n</code> and <b>J</b> is an array with at least n elements</li>
+<li><b>k</b> is <code>"maxItems": n</code> and <b>J</b> is an array with at most n elements</li>
+<li><b>k</b> is <code>"uniqueItems": true</code> and <b>J</b> is an array with all elements different from each other</li>
+</ul>
+<h3 id="object-restrictions">Object Restrictions</h3>
+<ul>
+<li><strong>k</strong> is of the form <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k' = k<sub>i</sub></b> for some <strong>i</strong> in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
+<li><strong>k</strong> is of the form <code>"additionalProperties": false</code> and <b>J</b> is an object such that every keyword in <b>J</b> is mentioned in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code></li>
+<li><strong>k</strong> is of the form <code>"additionalProperties": true</code> and <b>J</b> is an object</li>
+<li><strong>k</strong> is of the form <code>"additionalProperties": s</code> and <b>J</b> is an object that for each key-value pair <b>k': j'</b> in <b>J</b> such that <b>k'</b> is different from every <b>k<sub>i</sub></b></b> in <code>"properties": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code> we have that <b>j'</b> satisfies <b>s</b></li>
+<li><strong>k</strong> is of the form <code>"required": [k<sub>1</sub> , ... , k<sub>n</sub>]</code> and each <b>k<sub>i</sub></b></b> appears in <strong>J</strong>. </li>
+<li><strong>k</strong> is of the form <code>"minProperties": n</code> and <b>J</b> is an object with at least <strong>n</strong> key:value pairs</li>
+<li><strong>k</strong> is of the form <code>"maxProperties": n</code> and <b>J</b> is an object with at most <strong>n</strong> key:value pairs</li>
+<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: [l<sub>1<sub>1</sub></sub> , ... ,l<sub>m<sub>1</sub></sub>], ... , k<sub>n</sub>: [l<sub>1<sub>n</sub></sub> , ... ,l<sub>m<sub>n</sub></sub>]}</code> and <b>J</b> is an object such that if <strong>k<sub>i</sub></strong> appears in <b>J</b> then every keyword in <strong>[l<sub>1<sub>i</sub></sub> , ... ,l<sub>m<sub>i</sub></sub>]</strong> appears in <b>J</b></li>
+<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code>  and <b>J</b> is an object such that if <b>k<sub>i</sub></b> appears on <b>J</b> then <b>J</b> must satisfy <b>s<sub>i</sub></b></li>
+<li><strong>k</strong> is of the form <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object such that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  regexp<sub>i</sub> for some i in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
+</ul>
+<h3 id="combinations">Combinations</h3>
+<ul>
+<li><strong>k</strong> is of the form <code>"anyOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>some</em> <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>k</strong> is of the form <code>"allOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>all</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>k</strong> is of the form <code>"oneOf": [{Sch<sub>1</sub>}, {Sch<sub>2</sub>}, ... ,{Sch<sub>n</sub>}]</code> and <strong>J</strong> validates against <em>exactly one</em> of <strong>Sch<sub>i</sub></strong>, for <strong>i</strong>=<strong>1</strong>...<strong>n</strong></li>
+<li><strong>k</strong> is of the form <code>"not": {Sch}</code> and <strong>J</strong> does <em>not</em> validate against <strong>Sch</strong></li>
 </ul></div>
         </div>
 
