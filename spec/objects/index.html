@@ -78,11 +78,11 @@
                         </li>
                     
                         <li >
-                            <a href="../multiple_types/">Multiple Types</a>
+                            <a href="../generic_keywords/">Generic Keywords</a>
                         </li>
                     
                         <li >
-                            <a href="../generic_keywords/">Generic Keywords</a>
+                            <a href="../multiple_types/">Multiple Types</a>
                         </li>
                     
                         <li >
@@ -120,7 +120,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../multiple_types/">
+                    <a rel="prev" href="../generic_keywords/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -479,7 +479,7 @@
 <li><strong>k</strong> is of the form <code>"required": [k<sub>1</sub> , ... , k<sub>n</sub>]</code> and each <b>k<sub>i</sub></b></b> appears in <strong>J</strong>. </li>
 <li><strong>k</strong> is of the form <code>"minProperties": n</code> and <b>J</b> is an object with at least <strong>n</strong> key:value pairs</li>
 <li><strong>k</strong> is of the form <code>"maxProperties": n</code> and <b>J</b> is an object with at most <strong>n</strong> key:value pairs</li>
-<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: [l<sub>1<sub>1</sub></sub> , ... ,l<sub>m<sub>1</sub></sub>], ... , k<sub>n</sub>: [l<sub>1<sub>n</sub></sub> , ... ,l<sub>m<sub>n</sub></sub>]}</code> and <b>J</b> is an object such that if <strong>k<sub>i</sub></strong> appears in <b>J</b> then every keyword in <strong>[l<sub>1<sub>i</sub></sub> , ... ,l<sub>m<sub>i</sub></sub>]</strong> appears in <b>J</b></li>
+<li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: [l<sub>1,1</sub> , ... ,l<sub>1,m<sub>1</sub></sub>], ... , k<sub>n</sub>: [l<sub>n,1</sub> , ... ,l<sub>n,m<sub>n</sub></sub>]}</code> and <b>J</b> is an object such that if <strong>k<sub>i</sub></strong> appears in <b>J</b> then every keyword in <strong>[l<sub>i,1</sub> , ... ,l<sub>i,m<sub>i</sub></sub>]</strong> appears in <b>J</b></li>
 <li><strong>k</strong> is of the form <code>"dependencies": {k<sub>1</sub>: s<sub>1</sub> , ... , k<sub>n</sub>: s<sub>n</sub>}</code>  and <b>J</b> is an object such that if <b>k<sub>i</sub></b> appears in <b>J</b> then <b>J</b> must satisfy <b>s<sub>i</sub></b></li>
 <li><strong>k</strong> is of the form <code>"patternProperties": {regexp<sub>1</sub>: s<sub>1</sub> , ... , regexp<sub>n</sub>: s<sub>n</sub>}</code> and <b>J</b> is an object such that for each key-value pair <b>k': j'</b> in <b>J</b>, if <b>k'</b> is in the language of  regexp<sub>i</sub> for some i in [ <strong>1</strong> , ... , <strong>n</strong> ] then <b>j'</b> satisfies <b>s<sub>i</sub></b></b></li>
 </ul></div>
