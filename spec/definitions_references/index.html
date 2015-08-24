@@ -230,7 +230,7 @@
         },
         "football_team": {
             "type": "object",
-            "required": ["team", "league"],
+            "required": ["name", "league"],
             "properties": {
                 "name": {"type": "string"},
                 "league": {"type": "string"},
@@ -346,9 +346,9 @@ schema under <em>person</em> and the schema under <em>football_team</em>. For ex
                 "last_name": {"type": "string"},
                 "age": {"type": "integer"}
             }
-        }
+        },
         "type": "object",
-        "required": ["team", "league"],
+        "required": ["name", "league"],
         "properties": {
             "name": {"type": "string"},
             "league": {"type": "string"},

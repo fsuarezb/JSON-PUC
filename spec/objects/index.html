@@ -157,12 +157,12 @@
 
 <p>or </p>
 <pre><code>{
-  "name": {"first": "Gary", "last": "Medel"}, 
+  "name": {"first_name": "Gary", "last_name": "Medel"}, 
   "age": 27
 }</code></pre>
 
 <p>but not, for instance</p>
-<pre><code>["this","list","is","ordered"]</code></pre>
+<pre><code>["this","is","an","array"]</code></pre>
 
 <h3 id="restrictions">Restrictions</h3>
 <p>Using JSON Schema we have several keywords to specify more specific types of objects. For example, if we want to specify documents that include <code>first_name</code>, <code>last_name</code> and <code>age</code>, we use</p>
@@ -224,7 +224,7 @@
     "properties": {
            "name": {
                "type": "object",
-               "required": ["first", "last"]
+               "required": ["first", "last"],
                "properties": {
                        "first": {"type": "string"},
                        "last": {"type": "string"}
@@ -378,7 +378,7 @@
 }</code></pre>
 
 <p>Now JSON objects that do have the key <code>"team"</code> must also validate against the schema </p>
-<pre>
+<pre><code>
 {
     "type": "object",
     "properties": {
@@ -386,8 +386,7 @@
         "goals": {"type": "integer"}
         },
     "required": ["league", "goals"]
-}
-</pre>
+}</code></pre>
 
 <p>and thus it must also have the keys <code>"league"</code> and <code>"goals"</code>. For example the next two objects validate against the complete schema</p>
 <pre><code>{
